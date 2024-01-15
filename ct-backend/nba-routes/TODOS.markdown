@@ -1,0 +1,2 @@
+- Route: /players/:id/profile
+  - add ALL game summaries instead of just those for the Suns
