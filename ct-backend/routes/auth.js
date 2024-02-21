@@ -9,6 +9,7 @@ const express = require("express");
 const router = new express.Router();
 const { createToken } = require("../helpers/tokens");
 const userAuthSchema = require("../schemas/userAuth.json");
+("");
 const userRegisterSchema = require("../schemas/userRegister.json");
 const { BadRequestError } = require("../expressError");
 
@@ -29,7 +30,9 @@ router.post("/token", async function (req, res, next) {
 
         const { username, password } = req.body;
         const user = await User.authenticate(username, password);
-        const token = createToken(user);
+        // console.log("user in /auth/token:", user);
+        const token = await createToken(user);
+        // console.log("token in /auth/token:", token);
         return res.json({ token });
     } catch (err) {
         return next(err);
@@ -54,7 +57,9 @@ router.post("/register", async function (req, res, next) {
         }
 
         const newUser = await User.register({ ...req.body, isAdmin: false });
-        const token = createToken(newUser);
+        console.log("newUser in /auth/register:", newUser);
+        const token = await createToken(newUser);
+        console.log("token in /auth/token:", token);
         return res.status(201).json({ token });
     } catch (err) {
         return next(err);

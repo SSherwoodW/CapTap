@@ -12,7 +12,7 @@ const {
 } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 const User = require("../models/user");
-const Post = require("../models/post");
+const Post = require("../models/journal");
 const { createToken } = require("../helpers/tokens");
 const userNewSchema = require("../schemas/userNew.json");
 const userUpdateSchema = require("../schemas/userUpdate.json");

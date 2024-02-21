@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generated schema for journalPlayersNew",
+  "type": "object",
+  "properties": {
+    "playerId": {
+      "type": "number"
+    },
+    "statCategory": {
+      "type": "string"
+    },
+    "overUnder": {
+      "type": "string",
+      "maxLength": 10
+    },
+    "value": {
+        "type": "integer"
+    }
+  },
+  "required": [
+    "playerId",
+    "statCategory",
+    "overUnder",
+    "value"
+  ]
+}

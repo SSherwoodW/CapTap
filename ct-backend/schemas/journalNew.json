@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Generated schema for Root",
+  "title": "Generated schema for journalNew",
   "type": "object",
   "properties": {
     "userId": {
@@ -8,14 +8,16 @@
     },
     "description": {
       "type": "string",
-      "maxLength": 255
+      "maxLength": 300
     },
-    "createdAt": {
+    "range": {
       "type": "string",
-      "format": "date-time"
+      "maxLength": 10
     }
   },
   "required": [
-    "description"
+    "userId",
+    "description",
+    "range"
   ]
 }

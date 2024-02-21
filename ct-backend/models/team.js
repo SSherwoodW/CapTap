@@ -93,6 +93,22 @@ class Team {
             return { success: false, message: err.message };
         }
     }
+
+    static async getRoster(apiId) {
+        const result = await db.query(
+            `SELECT t.code, p.id, p.api_id, p.full_name FROM teams t
+            JOIN players p ON t.api_id = p.team_id
+            WHERE p.team_id = $1`,
+            [apiId]
+        );
+
+        const roster = result.rows;
+
+        if (!roster)
+            throw new NotFoundError("Unable to find players for team:", apiId);
+
+        return roster;
+    }
 }
 
 module.exports = Team;

@@ -2,7 +2,7 @@
 
 /** Convenience middleware to handle common auth cases in routes. */
 
-const jwt = require("jsonwebtoken");
+const jose = require("jose");
 const { SECRET_KEY } = require("../config");
 const { UnauthorizedError } = require("../expressError");
 
@@ -14,12 +14,18 @@ const { UnauthorizedError } = require("../expressError");
  * It's not an error if no token was provided or if the token is not valid.
  */
 
-function authenticateJWT(req, res, next) {
+async function authenticateJWT(req, res, next) {
     try {
         const authHeader = req.headers && req.headers.authorization;
-        if (authHeader) {
+        console.log(authHeader);
+        if (authHeader !== "Bearer undefined") {
             const token = authHeader.replace(/^[Bb]earer /, "").trim();
-            res.locals.user = jwt.verify(token, SECRET_KEY);
+            const decodedToken = await jose.jwtVerify(
+                token,
+                Buffer.from(SECRET_KEY)
+            );
+            const { username, isAdmin } = decodedToken.payload;
+            res.locals.user = { username, isAdmin };
         }
         return next();
     } catch (err) {

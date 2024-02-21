@@ -23,7 +23,12 @@ const updateDailyBoxscores = async () => {
             [yesterday, phxId]
         );
 
-        console.log("yesterdayGames:", yesterdayGames);
+        if (yesterdayGames.rows < 1) {
+            console.log("no games played yesterday");
+            return "no games played yesterday";
+        }
+
+        console.log("yesterdayGames:", yesterdayGames.rows);
 
         const gameIds = yesterdayGames.rows.map((game) => game.api_id);
         const boxScorePromises = gameIds.map((gameId) =>

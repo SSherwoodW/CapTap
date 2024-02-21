@@ -63,12 +63,12 @@ router.get("/", ensureLoggedIn, async function (req, res, next) {
     }
 });
 
-/** GET /teams/[criteria] { criteria } => { id, api_id, name, code }
+/** GET /teams/[criteria] { criteria } => { id, api_id, name, code, players: [ {code, id, api_id, first_name, last_name, season_id, team_id },{...}] }
  *
  * Requires search criteria in URL params.
  * Can request by id, api_id, name (partial match accepted), or team code.
  *
- * Returns { team: {id, api_id, name, code } }
+ * Returns { team: {id, api_id, name, code, players} }
  *
  * Authorization required: logged-in user.
  */
@@ -87,12 +87,11 @@ router.get("/:criteria", ensureLoggedIn, async function (req, res, next) {
             criteria.name = req.params.criteria;
         }
         const team = await Team.findBy(criteria);
+        console.log(team);
 
-        const rosterRes = await axios.get(
-            `http://api.sportradar.us/nba/trial/v8/en/teams/${team.api_id}/profile.json?api_key=${API_KEY}`
-        );
+        const roster = await Team.getRoster(team.api_id);
+        team["players"] = roster;
 
-        team.roster = rosterRes.data.players;
         return res.json({ team });
     } catch (err) {
         return next(err);

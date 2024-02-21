@@ -11,7 +11,7 @@ const { NotFoundError } = require("./expressError");
 const { authenticateJWT } = require("./middleware/auth");
 const authRoutes = require("./routes/auth");
 const usersRoutes = require("./routes/users");
-const postsRoutes = require("./routes/posts");
+const journalRoutes = require("./routes/journal");
 
 const gamesRoutes = require("./nba-routes/games");
 const teamsRoutes = require("./nba-routes/teams");
@@ -30,7 +30,7 @@ app.use(authenticateJWT);
 
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
-app.use("/posts", postsRoutes);
+app.use("/journal", journalRoutes);
 app.use("/games", gamesRoutes);
 app.use("/teams", teamsRoutes);
 app.use("/players", playersRoutes);

@@ -115,45 +115,50 @@ router.post("/boxscores", ensureAdmin, async function (req, res, next) {
     }
 });
 
-/** GET /[criteria] { criteria } => { id, apiId, firstName, lastName, fullName}
+/** GET / { } => { id, apiId, firstName, lastName, fullName}
  *
- * Requires a player search criteria. Accepts id, apiId, name (partial matches accepted)
+ * Can provide search filter in query:
+ * - name (full, first, or last -- will find partial and case-insensitive matches)
  *
  * Returns { "players": [ {id, api_id, first_name, last_name, season_id, team_id}, {...}, {} ] }
  *
  */
 
-// router.get("/:criteria", ensureLoggedIn, async function (req, res, next) {
-//     try {
-//         let criteria = {};
+router.get("/", ensureLoggedIn, async function (req, res, next) {
+    try {
+        let criteria = {};
+        let players;
 
-//         if (req.params.criteria.length > 30) {
-//             criteria.apiId = req.params.criteria;
-//         } else {
-//             const nameCriteria = req.params.criteria;
+        console.log(req.query);
 
-//             if (nameCriteria.includes(" ")) {
-//                 const [firstName, lastName] = nameCriteria.split(" ");
-//                 criteria.firstName = firstName;
-//                 criteria.lastName = lastName;
-//             } else {
-//                 criteria.fullName = nameCriteria;
-//             }
-//         }
+        if (!req.query.full_name) {
+            players = await Player.findBy(criteria);
+            return res.json({ players });
+        } else {
+            const nameCriteria = req.query.full_name;
 
-//         const players = await Player.findBy(criteria);
+            if (nameCriteria.includes(" ")) {
+                const [firstName, lastName] = nameCriteria.split(" ");
+                criteria.firstName = firstName;
+                criteria.lastName = lastName;
+            } else {
+                criteria.fullName = nameCriteria;
+            }
+        }
 
-//         return res.json({ players });
-//     } catch (err) {
-//         return next(err);
-//     }
-// });
+        players = await Player.findBy(criteria);
 
-/** GET /[id] ***NEED TO FIGURE OUT HOW TO RESTful rewrite this and the above route!!!
+        return res.json({ players });
+    } catch (err) {
+        return next(err);
+    }
+});
+
+/** GET /[id]
  *
  * Requires player id (captap db id)
  *
- * Returns player information, including game log and season statistical averages
+ * Returns player information, including game log
  *
  * Authentication required: logged in user
  */
@@ -161,7 +166,9 @@ router.post("/boxscores", ensureAdmin, async function (req, res, next) {
 router.get("/:id", ensureLoggedIn, async function (req, res, next) {
     try {
         let player = await Player.find(req.params.id);
-        const playerId = player[0].api_id;
+        console.log("In route:", player.apiid);
+        const playerId = player.apiid;
+        console.log(playerId);
 
         // looking for those boxscores...
         /**
@@ -172,12 +179,10 @@ router.get("/:id", ensureLoggedIn, async function (req, res, next) {
          */
         const boxscores = await Boxscore.find(playerId);
 
-        const pointsLast5 = boxscores
-            .slice(0, 5)
-            .map((boxscore) => boxscore.points);
-        console.log(pointsLast5);
+        player["boxscores"] = boxscores;
+        console.log("player", player);
 
-        return res.json({ boxscores });
+        return res.json({ player });
     } catch (err) {
         return next(err);
     }
