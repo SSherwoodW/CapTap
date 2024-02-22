@@ -6,7 +6,7 @@ const {
     ensureLoggedIn,
 } = require("../middleware/auth");
 const { parseGameData } = require("../helpers/api");
-const { API_KEY } = require("../secret");
+const { API_KEY } = require("../secret/secret");
 const { BadRequestError } = require("../expressError");
 
 const Game = require("../models/game");

@@ -10,13 +10,8 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState();
-    // const [currentUser, setCurrentUser] = useState(null);
     const [currentUser, setCurrentUser] = useLocalStorage("currentUser", null);
     const [token, setToken] = useLocalStorage("token", null);
-    // const [token, setToken] = useState(() => {
-    //         const storedToken = localStorage.getItem('token');
-    //         return storedToken !== "undefined" ? storedToken : null;
-    //     });
 
     useEffect(() => {
         async function fetchCurrentUser() {
@@ -24,7 +19,6 @@ export const AuthProvider = ({ children }) => {
                 if (token !== null) {
                     CapTapApi.token = token;
                     const { username } = jose.decodeJwt(token);
-                    console.log('ctapi token in authContext:', token);
                     const currentUser = await CapTapApi.getCurrentUser(username);
                     setCurrentUser(currentUser);
                     setIsLoggedIn(true);
@@ -41,18 +35,13 @@ export const AuthProvider = ({ children }) => {
 
     async function handleLogin(formData) {
         try {
-            const logInResponse = await CapTapApi.login(formData)
-            console.log("loginResponse handleLogin:", logInResponse);
+            const logInResponse = await CapTapApi.login(formData);
             setToken(logInResponse);
-            console.log("token after setToken handleLogin:", token);
-            // localStorage.setItem('token', logInResponse.token);
             setIsLoggedIn(true);
 
             // Fetch user data and set currentUser state
             const { username } = jose.decodeJwt(token);
-            console.log('username handleLogin:', username);
             const userData = await CapTapApi.getCurrentUser(username);
-            console.log("userData handleLogin:", userData);
             setCurrentUser(userData);
             return { success: true };
         } catch (err) {
@@ -70,7 +59,6 @@ export const AuthProvider = ({ children }) => {
 
             // Fetch user data and set currentUser state
             const { username } = jose.decodeJwt(token);
-            console.log('username handleSignup:', username);
             const userData = await CapTapApi.getCurrentUser(username);
             setCurrentUser(userData);
             return { success: true };

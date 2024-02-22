@@ -12,7 +12,7 @@ const Team = require("../models/team");
 
 const router = express.Router();
 
-const { API_KEY } = require("../secret");
+const { API_KEY } = require("../secret/secret");
 
 const apiUrl = `https://api.sportradar.us/nba/trial/v8/en/`;
 

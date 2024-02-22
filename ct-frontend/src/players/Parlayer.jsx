@@ -79,17 +79,15 @@ function Parlayer() {
     //********************************************************************************* */
     
     useEffect(() => {
-        if (currentUser) {
-            console.log('currentUser useEffect:');
+        if (CapTapApi.token) {
             const fetchData = async () => {
-                console.debug('Fetching data...');
+                // console.debug('Fetching data...');
                 try {
                     const teamsData = await CapTapApi.getTeams();
                         setTeams(teamsData);
 
                     if (player1Id && player2Id && code) {
                         setPlayerIds([player1Id, player2Id]);
-                        console.log("playerIds:", playerIds);
                         const teamData = await CapTapApi.getTeam(code);
                         setTeam(teamData);
                     }
@@ -107,8 +105,6 @@ function Parlayer() {
         const selectedTeamCode = evt.target.value;
         const teamData = await CapTapApi.getTeam(selectedTeamCode);
         setTeam(teamData);
-        console.log("TeamData in onChange:", teamData);
-
         navigate(`/parlayer/${selectedTeamCode}`);
     };
 
@@ -119,20 +115,15 @@ function Parlayer() {
             } else {
                 return prevIds;
             }
-        }); 
-        
-        console.debug("PlayerIds handleClick:", playerIds);
+        });
     };
 
     const handleRemovePlayer = (playerId, apiId) => {
-        console.log("removing player with id", playerId);
         setPlayerIds((playerIds) => playerIds.filter((id) => id !== playerId));
-        
         setSelectedPlayerData((selectedPlayerData) => selectedPlayerData.filter((player) => player.apiid !== apiId));
         setSelectedStats((selectedStats) => selectedStats.filter(([id]) => id !== playerId));
         setValues((values) => values.filter(([id]) => id !== playerId));
         setOverUnders((overUnders) => overUnders.filter(([id]) => id !== playerId));
-        console.debug("handleRemovePlayer playerIds:", playerIds, "selectedStats:", selectedStats, "values:", values, "overUnders:", overUnders);
     };
 
     useEffect(() => {
@@ -145,7 +136,6 @@ function Parlayer() {
         if (playerIds.length > 0) {
             fetchPlayerData();
         };
-        console.debug("PlayerData useEffect:", selectedPlayerData);
     }, [playerIds]);
 
     //********************************************************************************* */

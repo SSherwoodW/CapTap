@@ -69,7 +69,6 @@ class CapTapApi {
 
     static async getTeams(name) {
         let res = await this.request("teams", { name });
-        console.log(res);
         return res.teams;
     }
 

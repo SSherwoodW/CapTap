@@ -20,7 +20,7 @@ const Boxscore = require("../models/boxscore");
 
 const router = express.Router();
 
-const { API_KEY } = require("../secret");
+const { API_KEY } = require("../secret/secret");
 
 /** POST / { } =>
  *
