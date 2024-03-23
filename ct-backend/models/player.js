@@ -1,11 +1,5 @@
 const db = require("../db");
-const natural = require("natural");
-
-const {
-    NotFoundError,
-    BadRequestError,
-    UnauthorizedError,
-} = require("../expressError");
+const { NotFoundError, BadRequestError } = require("../expressError");
 
 let regularSeasonId = "f1162fd1-29c5-4c29-abb4-57b78f16d238";
 let playInTournamentId = "851f97e4-c830-4590-88e9-e1286383148c";
@@ -16,7 +10,11 @@ let postSeasonId = "8905ddd2-e5f0-4734-b9ef-c9c3452b72d2";
 class Player {
     /** Add players to database
      *
+     * Requires array of playerData objects: [ {playerData}, {playerData}, ... ]
      *
+     * Returns { success: true, message: "Players added successfully." }
+     *
+     * Throws BadRequestError if unable to add players.
      */
     static async addAll(playerData) {
         try {
@@ -47,35 +45,58 @@ class Player {
         }
     }
 
-    static async find(id) {
-        let parsedId = parseInt(id);
+    /** Get player and their teammates from DB.
+     *
+     * Requires playerId(int)
+     *
+     * Returns playerData object: {
+     * apiId, fullName, teamName, teammates:
+     * [{apiId, fullName, teamName,}, apiId, fullName, teamName,]
+     * }
+     *
+     * Throws BadRequestError if player has no teammates/
+     */
 
-        let playerRes = await db.query(
-            `SELECT p.api_id AS apiId, p.full_name AS fullName, t.name 
+    static async find(id) {
+        try {
+            let parsedId = parseInt(id);
+
+            let playerRes = await db.query(
+                `SELECT p.api_id AS apiId, p.full_name AS fullName, t.name 
             FROM players p
             JOIN teams t
             ON p.team_id = t.api_id
             WHERE p.id = $1`,
-            [parsedId]
-        );
+                [parsedId]
+            );
 
-        let player = playerRes.rows[0];
+            let player = playerRes.rows[0];
 
-        const teammatesRes = await db.query(
-            `SELECT * FROM players
+            const teammatesRes = await db.query(
+                `SELECT * FROM players
             WHERE team_id = 
             (SELECT team_id FROM players WHERE api_id = $1)`,
-            [player.apiid]
-        );
+                [player.apiid]
+            );
 
-        const teammates = teammatesRes.rows;
+            let teammates = teammatesRes.rows;
 
-        if (!teammates) throw new NotFoundError("No players found.");
+            teammates.length > 1
+                ? (player.teammates = teammates)
+                : (player.teammates = []);
 
-        player.teammates = teammates;
-
-        return player;
+            return player;
+        } catch (err) {
+            throw new NotFoundError("No players found");
+        }
     }
+
+    /** Get player by first name, last name, or fullName, or ALL players from DB if no criteria
+     *
+     * Requires search criteria, else returns all players.
+     *
+     * Returns id, Name, team code.
+     */
 
     static async findBy(criteria) {
         try {

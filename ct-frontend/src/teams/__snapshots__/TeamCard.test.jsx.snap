@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TeamCard component > should match snapshot 1`] = `
+<div>
+  <a
+    class="CompanyCard card"
+    href="/teams/test"
+  >
+    <div
+      class="card-body"
+    >
+      <h6
+        class="card-title"
+      >
+        test
+      </h6>
+      <p>
+        Test Name
+      </p>
+    </div>
+  </a>
+</div>
+`;

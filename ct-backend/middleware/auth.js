@@ -17,15 +17,15 @@ const { UnauthorizedError } = require("../expressError");
 async function authenticateJWT(req, res, next) {
     try {
         const authHeader = req.headers && req.headers.authorization;
-        console.log(authHeader);
         if (authHeader !== "Bearer undefined") {
             const token = authHeader.replace(/^[Bb]earer /, "").trim();
             const decodedToken = await jose.jwtVerify(
                 token,
                 Buffer.from(SECRET_KEY)
             );
-            const { username, isAdmin } = decodedToken.payload;
-            res.locals.user = { username, isAdmin };
+            const { username, isAdmin, iat } = decodedToken.payload;
+            res.locals.user = { iat, username, isAdmin };
+            console.log("res.locals.user authJWT", res.locals.user);
         }
         return next();
     } catch (err) {
@@ -72,6 +72,7 @@ function ensureAdmin(req, res, next) {
 function ensureCorrectUserOrAdmin(req, res, next) {
     try {
         const user = res.locals.user;
+        console.log(user);
         if (
             !(user && (user.isAdmin || user.username === req.params.username))
         ) {

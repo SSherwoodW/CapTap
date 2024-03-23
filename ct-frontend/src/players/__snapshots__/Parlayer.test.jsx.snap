@@ -1,0 +1,447 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Parlayer > matches snapshot 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div>
+        <div
+          class="flex flex-col md:flex-row"
+        >
+          <div
+            class="flex-grow bg-gray-300 border-8 border-gray-800 shadow-lg"
+          >
+            <div
+              class="relative mx-6 my-2"
+            >
+              <div
+                class="flex justify-between items-center text-gray-800"
+              >
+                <h4
+                  class="Parlayer-header text-5xl font-extralight uppercase p-4 shadow-md bg-indigo-400 rounded-sm border-2 border-indigo-300"
+                >
+                  Parlayer
+                </h4>
+                <div
+                  class="shadow-md rounded-sm"
+                >
+                  <div
+                    class="bg-gray-400 border-2 border-gray-300 p-2"
+                  >
+                    <h2
+                      class="bg-indigo-400 rounded-sm border-gray-400 border-0 shadow-md text-gray-800 text-lg mb-2 text-center uppercase"
+                    >
+                      Game Range
+                    </h2>
+                    <div
+                      class="flex grid-cols-4 divide-indigo-400 divide-x"
+                    >
+                      <button
+                        class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                      >
+                        L5
+                      </button>
+                      <button
+                        class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                      >
+                        L10
+                      </button>
+                      <button
+                        class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                      >
+                        L20
+                      </button>
+                      <button
+                        class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                      >
+                        Season
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="flex flex-col items-center p-2 border-2 border-gray-200 bg-gray-400"
+                >
+                  <label
+                    class="text-center uppercase bg-indigo-400 px-6 mb-2 shadow-md rounded-sm "
+                    for="team-select"
+                  >
+                    Choose a team
+                  </label>
+                  <select
+                    class="border-indigo-300 bg-gray-400 rounded-md justify-center gap-x-1.5 py-2 px-2 text-m font-normal text-gray-900 text-center shadow-md ring-1 ring-inset ring-gray-300 hover:bg-gray-700 "
+                    id="team-select"
+                  >
+                    <option
+                      value=""
+                    >
+                      Select Team
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div>
+      <div
+        class="flex flex-col md:flex-row"
+      >
+        <div
+          class="flex-grow bg-gray-300 border-8 border-gray-800 shadow-lg"
+        >
+          <div
+            class="relative mx-6 my-2"
+          >
+            <div
+              class="flex justify-between items-center text-gray-800"
+            >
+              <h4
+                class="Parlayer-header text-5xl font-extralight uppercase p-4 shadow-md bg-indigo-400 rounded-sm border-2 border-indigo-300"
+              >
+                Parlayer
+              </h4>
+              <div
+                class="shadow-md rounded-sm"
+              >
+                <div
+                  class="bg-gray-400 border-2 border-gray-300 p-2"
+                >
+                  <h2
+                    class="bg-indigo-400 rounded-sm border-gray-400 border-0 shadow-md text-gray-800 text-lg mb-2 text-center uppercase"
+                  >
+                    Game Range
+                  </h2>
+                  <div
+                    class="flex grid-cols-4 divide-indigo-400 divide-x"
+                  >
+                    <button
+                      class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                    >
+                      L5
+                    </button>
+                    <button
+                      class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                    >
+                      L10
+                    </button>
+                    <button
+                      class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                    >
+                      L20
+                    </button>
+                    <button
+                      class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                    >
+                      Season
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="flex flex-col items-center p-2 border-2 border-gray-200 bg-gray-400"
+              >
+                <label
+                  class="text-center uppercase bg-indigo-400 px-6 mb-2 shadow-md rounded-sm "
+                  for="team-select"
+                >
+                  Choose a team
+                </label>
+                <select
+                  class="border-indigo-300 bg-gray-400 rounded-md justify-center gap-x-1.5 py-2 px-2 text-m font-normal text-gray-900 text-center shadow-md ring-1 ring-inset ring-gray-300 hover:bg-gray-700 "
+                  id="team-select"
+                >
+                  <option
+                    value=""
+                  >
+                    Select Team
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Parlayer > matches snapshot when logged out 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div>
+        <div
+          class="flex flex-col md:flex-row"
+        >
+          <div
+            class="flex-grow bg-gray-300 border-8 border-gray-800 shadow-lg"
+          >
+            <div
+              class="relative mx-6 my-2"
+            >
+              <div
+                class="flex justify-between items-center text-gray-800"
+              >
+                <h4
+                  class="Parlayer-header text-5xl font-extralight uppercase p-4 shadow-md bg-indigo-400 rounded-sm border-2 border-indigo-300"
+                >
+                  Parlayer
+                </h4>
+                <div
+                  class="shadow-md rounded-sm"
+                >
+                  <div
+                    class="bg-gray-400 border-2 border-gray-300 p-2"
+                  >
+                    <h2
+                      class="bg-indigo-400 rounded-sm border-gray-400 border-0 shadow-md text-gray-800 text-lg mb-2 text-center uppercase"
+                    >
+                      Game Range
+                    </h2>
+                    <div
+                      class="flex grid-cols-4 divide-indigo-400 divide-x"
+                    >
+                      <button
+                        class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                      >
+                        L5
+                      </button>
+                      <button
+                        class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                      >
+                        L10
+                      </button>
+                      <button
+                        class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                      >
+                        L20
+                      </button>
+                      <button
+                        class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                      >
+                        Season
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="flex flex-col items-center p-2 border-2 border-gray-200 bg-gray-400"
+                >
+                  <label
+                    class="text-center uppercase bg-indigo-400 px-6 mb-2 shadow-md rounded-sm "
+                    for="team-select"
+                  >
+                    Choose a team
+                  </label>
+                  <select
+                    class="border-indigo-300 bg-gray-400 rounded-md justify-center gap-x-1.5 py-2 px-2 text-m font-normal text-gray-900 text-center shadow-md ring-1 ring-inset ring-gray-300 hover:bg-gray-700 "
+                    id="team-select"
+                  >
+                    <option
+                      value=""
+                    >
+                      Select Team
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div>
+      <div
+        class="flex flex-col md:flex-row"
+      >
+        <div
+          class="flex-grow bg-gray-300 border-8 border-gray-800 shadow-lg"
+        >
+          <div
+            class="relative mx-6 my-2"
+          >
+            <div
+              class="flex justify-between items-center text-gray-800"
+            >
+              <h4
+                class="Parlayer-header text-5xl font-extralight uppercase p-4 shadow-md bg-indigo-400 rounded-sm border-2 border-indigo-300"
+              >
+                Parlayer
+              </h4>
+              <div
+                class="shadow-md rounded-sm"
+              >
+                <div
+                  class="bg-gray-400 border-2 border-gray-300 p-2"
+                >
+                  <h2
+                    class="bg-indigo-400 rounded-sm border-gray-400 border-0 shadow-md text-gray-800 text-lg mb-2 text-center uppercase"
+                  >
+                    Game Range
+                  </h2>
+                  <div
+                    class="flex grid-cols-4 divide-indigo-400 divide-x"
+                  >
+                    <button
+                      class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                    >
+                      L5
+                    </button>
+                    <button
+                      class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                    >
+                      L10
+                    </button>
+                    <button
+                      class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                    >
+                      L20
+                    </button>
+                    <button
+                      class="px-4 py-2 rounded-sm text-gray-900 hover:bg-indigo-200 focus:outline-none "
+                    >
+                      Season
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="flex flex-col items-center p-2 border-2 border-gray-200 bg-gray-400"
+              >
+                <label
+                  class="text-center uppercase bg-indigo-400 px-6 mb-2 shadow-md rounded-sm "
+                  for="team-select"
+                >
+                  Choose a team
+                </label>
+                <select
+                  class="border-indigo-300 bg-gray-400 rounded-md justify-center gap-x-1.5 py-2 px-2 text-m font-normal text-gray-900 text-center shadow-md ring-1 ring-inset ring-gray-300 hover:bg-gray-700 "
+                  id="team-select"
+                >
+                  <option
+                    value=""
+                  >
+                    Select Team
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

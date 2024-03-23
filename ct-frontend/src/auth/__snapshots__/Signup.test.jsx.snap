@@ -1,0 +1,881 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Signup > matches snapshot 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8"
+      >
+        <div
+          data-testid="navigate"
+        >
+          /
+        </div>
+        <div
+          class="sm:mx-auto sm:w-full sm:max-w-sm"
+        >
+          <img
+            alt="CapTap"
+            class="mx-auto h-10 w-auto"
+            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+          />
+          <h2
+            class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+          >
+            Sign up for your account
+          </h2>
+        </div>
+        <div
+          class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm"
+        >
+          <form
+            class="space-y-4"
+          >
+            <div
+              class="flex items-center justify-between"
+            >
+              <div>
+                <label
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  for="firstName"
+                >
+                  First Name
+                </label>
+                <div
+                  class="mt-2"
+                >
+                  <input
+                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    id="firstName"
+                    name="firstName"
+                    required=""
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  for="lastName"
+                >
+                  Last Name
+                </label>
+                <div
+                  class="mt-2"
+                >
+                  <input
+                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    id="lastName"
+                    name="lastName"
+                    required=""
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium leading-6 text-gray-900"
+                for="birthdate"
+              >
+                Birthdate
+              </label>
+              <div
+                class="mt-2"
+              >
+                <input
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="birthdate"
+                  name="birthdate"
+                  required=""
+                  type="date"
+                  value=""
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium leading-6 text-gray-900"
+                for="email"
+              >
+                Email
+              </label>
+              <div
+                class="mt-2"
+              >
+                <input
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="email"
+                  name="email"
+                  placeholder="ex: you@captap.com"
+                  required=""
+                  type="email"
+                  value=""
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium leading-6 text-gray-900"
+                for="username"
+              >
+                Username
+              </label>
+              <div
+                class="mt-2"
+              >
+                <input
+                  autocomplete="username"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="username"
+                  name="username"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div>
+              <div
+                class="flex items-center justify-between"
+              >
+                <label
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  for="password"
+                >
+                  Password
+                </label>
+                <div
+                  class="text-sm"
+                >
+                  <a
+                    class="font-semibold text-indigo-600 hover:text-indigo-500"
+                    href="#"
+                  >
+                    Forgot password?
+                  </a>
+                </div>
+              </div>
+              <div
+                class="mt-2"
+              >
+                <input
+                  autocomplete="current-password"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="password"
+                  name="password"
+                  required=""
+                  type="password"
+                  value=""
+                />
+              </div>
+            </div>
+            <div>
+              <button
+                class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                type="submit"
+              >
+                Sign up
+              </button>
+            </div>
+          </form>
+          <p
+            class="mt-10 text-center text-sm text-gray-500"
+          >
+            Already registered?
+            <a
+              class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              href="/login"
+            >
+               Log In
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8"
+    >
+      <div
+        data-testid="navigate"
+      >
+        /
+      </div>
+      <div
+        class="sm:mx-auto sm:w-full sm:max-w-sm"
+      >
+        <img
+          alt="CapTap"
+          class="mx-auto h-10 w-auto"
+          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+        />
+        <h2
+          class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+        >
+          Sign up for your account
+        </h2>
+      </div>
+      <div
+        class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm"
+      >
+        <form
+          class="space-y-4"
+        >
+          <div
+            class="flex items-center justify-between"
+          >
+            <div>
+              <label
+                class="block text-sm font-medium leading-6 text-gray-900"
+                for="firstName"
+              >
+                First Name
+              </label>
+              <div
+                class="mt-2"
+              >
+                <input
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="firstName"
+                  name="firstName"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium leading-6 text-gray-900"
+                for="lastName"
+              >
+                Last Name
+              </label>
+              <div
+                class="mt-2"
+              >
+                <input
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="lastName"
+                  name="lastName"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <label
+              class="block text-sm font-medium leading-6 text-gray-900"
+              for="birthdate"
+            >
+              Birthdate
+            </label>
+            <div
+              class="mt-2"
+            >
+              <input
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                id="birthdate"
+                name="birthdate"
+                required=""
+                type="date"
+                value=""
+              />
+            </div>
+          </div>
+          <div>
+            <label
+              class="block text-sm font-medium leading-6 text-gray-900"
+              for="email"
+            >
+              Email
+            </label>
+            <div
+              class="mt-2"
+            >
+              <input
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                id="email"
+                name="email"
+                placeholder="ex: you@captap.com"
+                required=""
+                type="email"
+                value=""
+              />
+            </div>
+          </div>
+          <div>
+            <label
+              class="block text-sm font-medium leading-6 text-gray-900"
+              for="username"
+            >
+              Username
+            </label>
+            <div
+              class="mt-2"
+            >
+              <input
+                autocomplete="username"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                id="username"
+                name="username"
+                required=""
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div>
+            <div
+              class="flex items-center justify-between"
+            >
+              <label
+                class="block text-sm font-medium leading-6 text-gray-900"
+                for="password"
+              >
+                Password
+              </label>
+              <div
+                class="text-sm"
+              >
+                <a
+                  class="font-semibold text-indigo-600 hover:text-indigo-500"
+                  href="#"
+                >
+                  Forgot password?
+                </a>
+              </div>
+            </div>
+            <div
+              class="mt-2"
+            >
+              <input
+                autocomplete="current-password"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                id="password"
+                name="password"
+                required=""
+                type="password"
+                value=""
+              />
+            </div>
+          </div>
+          <div>
+            <button
+              class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              type="submit"
+            >
+              Sign up
+            </button>
+          </div>
+        </form>
+        <p
+          class="mt-10 text-center text-sm text-gray-500"
+        >
+          Already registered?
+          <a
+            class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+            href="/login"
+          >
+             Log In
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Signup > matches snapshot when logged out 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8"
+      >
+        <div
+          class="sm:mx-auto sm:w-full sm:max-w-sm"
+        >
+          <img
+            alt="CapTap"
+            class="mx-auto h-10 w-auto"
+            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+          />
+          <h2
+            class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+          >
+            Sign up for your account
+          </h2>
+        </div>
+        <div
+          class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm"
+        >
+          <form
+            class="space-y-4"
+          >
+            <div
+              class="flex items-center justify-between"
+            >
+              <div>
+                <label
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  for="firstName"
+                >
+                  First Name
+                </label>
+                <div
+                  class="mt-2"
+                >
+                  <input
+                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    id="firstName"
+                    name="firstName"
+                    required=""
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  for="lastName"
+                >
+                  Last Name
+                </label>
+                <div
+                  class="mt-2"
+                >
+                  <input
+                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    id="lastName"
+                    name="lastName"
+                    required=""
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium leading-6 text-gray-900"
+                for="birthdate"
+              >
+                Birthdate
+              </label>
+              <div
+                class="mt-2"
+              >
+                <input
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="birthdate"
+                  name="birthdate"
+                  required=""
+                  type="date"
+                  value=""
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium leading-6 text-gray-900"
+                for="email"
+              >
+                Email
+              </label>
+              <div
+                class="mt-2"
+              >
+                <input
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="email"
+                  name="email"
+                  placeholder="ex: you@captap.com"
+                  required=""
+                  type="email"
+                  value=""
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium leading-6 text-gray-900"
+                for="username"
+              >
+                Username
+              </label>
+              <div
+                class="mt-2"
+              >
+                <input
+                  autocomplete="username"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="username"
+                  name="username"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div>
+              <div
+                class="flex items-center justify-between"
+              >
+                <label
+                  class="block text-sm font-medium leading-6 text-gray-900"
+                  for="password"
+                >
+                  Password
+                </label>
+                <div
+                  class="text-sm"
+                >
+                  <a
+                    class="font-semibold text-indigo-600 hover:text-indigo-500"
+                    href="#"
+                  >
+                    Forgot password?
+                  </a>
+                </div>
+              </div>
+              <div
+                class="mt-2"
+              >
+                <input
+                  autocomplete="current-password"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="password"
+                  name="password"
+                  required=""
+                  type="password"
+                  value=""
+                />
+              </div>
+            </div>
+            <div>
+              <button
+                class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                type="submit"
+              >
+                Sign up
+              </button>
+            </div>
+          </form>
+          <p
+            class="mt-10 text-center text-sm text-gray-500"
+          >
+            Already registered?
+            <a
+              class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              href="/login"
+            >
+               Log In
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8"
+    >
+      <div
+        class="sm:mx-auto sm:w-full sm:max-w-sm"
+      >
+        <img
+          alt="CapTap"
+          class="mx-auto h-10 w-auto"
+          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+        />
+        <h2
+          class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+        >
+          Sign up for your account
+        </h2>
+      </div>
+      <div
+        class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm"
+      >
+        <form
+          class="space-y-4"
+        >
+          <div
+            class="flex items-center justify-between"
+          >
+            <div>
+              <label
+                class="block text-sm font-medium leading-6 text-gray-900"
+                for="firstName"
+              >
+                First Name
+              </label>
+              <div
+                class="mt-2"
+              >
+                <input
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="firstName"
+                  name="firstName"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium leading-6 text-gray-900"
+                for="lastName"
+              >
+                Last Name
+              </label>
+              <div
+                class="mt-2"
+              >
+                <input
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  id="lastName"
+                  name="lastName"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <label
+              class="block text-sm font-medium leading-6 text-gray-900"
+              for="birthdate"
+            >
+              Birthdate
+            </label>
+            <div
+              class="mt-2"
+            >
+              <input
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                id="birthdate"
+                name="birthdate"
+                required=""
+                type="date"
+                value=""
+              />
+            </div>
+          </div>
+          <div>
+            <label
+              class="block text-sm font-medium leading-6 text-gray-900"
+              for="email"
+            >
+              Email
+            </label>
+            <div
+              class="mt-2"
+            >
+              <input
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                id="email"
+                name="email"
+                placeholder="ex: you@captap.com"
+                required=""
+                type="email"
+                value=""
+              />
+            </div>
+          </div>
+          <div>
+            <label
+              class="block text-sm font-medium leading-6 text-gray-900"
+              for="username"
+            >
+              Username
+            </label>
+            <div
+              class="mt-2"
+            >
+              <input
+                autocomplete="username"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                id="username"
+                name="username"
+                required=""
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div>
+            <div
+              class="flex items-center justify-between"
+            >
+              <label
+                class="block text-sm font-medium leading-6 text-gray-900"
+                for="password"
+              >
+                Password
+              </label>
+              <div
+                class="text-sm"
+              >
+                <a
+                  class="font-semibold text-indigo-600 hover:text-indigo-500"
+                  href="#"
+                >
+                  Forgot password?
+                </a>
+              </div>
+            </div>
+            <div
+              class="mt-2"
+            >
+              <input
+                autocomplete="current-password"
+                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                id="password"
+                name="password"
+                required=""
+                type="password"
+                value=""
+              />
+            </div>
+          </div>
+          <div>
+            <button
+              class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              type="submit"
+            >
+              Sign up
+            </button>
+          </div>
+        </form>
+        <p
+          class="mt-10 text-center text-sm text-gray-500"
+        >
+          Already registered?
+          <a
+            class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+            href="/login"
+          >
+             Log In
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

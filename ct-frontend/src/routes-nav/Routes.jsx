@@ -1,8 +1,6 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import { useAuth } from "../auth/authContext";
 
-import Layout from "./Layout";
 import Home from "../homepage/Home";
 import Login from "../auth/Login";
 import Signup from "../auth/Signup";
@@ -14,8 +12,6 @@ import PlayersList from "../players/PlayersList";
 import PlayerDetail from "../players/PlayerDetail";
 import Parlayer from "../players/Parlayer";
 import Journal from "../journal/Journal";
-import JournalEntryCard from "../journal/JournalEntryCard";
-
 
 const router = createBrowserRouter([
     {

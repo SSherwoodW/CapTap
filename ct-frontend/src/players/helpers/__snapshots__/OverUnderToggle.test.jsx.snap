@@ -1,0 +1,17 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`OverUnderToggle > renders the component with default props 1`] = `
+"<div class="mt-2 px-4"><div id="headlessui-radiogroup-:r0:" role="radiogroup"><div class="" role="none"><div class="
+                bg-gray-500 text-white
+                relative flex cursor-pointer text-center rounded-sm px-5 py-2 mb-2 shadow-md focus:outline-none" id="headlessui-radiogroup-option-:r1:" role="radio" aria-checked="false" tabindex="0" data-headlessui-state="" aria-labelledby="headlessui-label-:r2:"><div class="flex items-center justify-center"><p class="font-medium text-gray-100" id="headlessui-label-:r2:">Over</p><input type="hidden" value="Over"></div></div><div class="
+                bg-gray-500 text-white
+                relative flex cursor-pointer text-center rounded-sm px-5 py-2 mb-2 shadow-md focus:outline-none" id="headlessui-radiogroup-option-:r3:" role="radio" aria-checked="false" tabindex="-1" data-headlessui-state="" aria-labelledby="headlessui-label-:r4:"><div class="flex items-center justify-center"><p class="font-medium text-gray-100" id="headlessui-label-:r4:">Under</p><input type="hidden" value="Under"></div></div></div></div></div>"
+`;
+
+exports[`OverUnderToggle > renders the component with selectedValue correctly 1`] = `
+"<div class="mt-2 px-4"><div id="headlessui-radiogroup-:r5:" role="radiogroup"><div class="" role="none"><div class="
+                bg-gray-500 text-white
+                relative flex cursor-pointer text-center rounded-sm px-5 py-2 mb-2 shadow-md focus:outline-none" id="headlessui-radiogroup-option-:r6:" role="radio" aria-checked="false" tabindex="0" data-headlessui-state="" aria-labelledby="headlessui-label-:r7:"><div class="flex items-center justify-center"><p class="font-medium text-gray-100" id="headlessui-label-:r7:">Over</p><input type="hidden" value="Over"></div></div><div class="
+                bg-gray-500 text-white
+                relative flex cursor-pointer text-center rounded-sm px-5 py-2 mb-2 shadow-md focus:outline-none" id="headlessui-radiogroup-option-:r8:" role="radio" aria-checked="false" tabindex="-1" data-headlessui-state="" aria-labelledby="headlessui-label-:r9:"><div class="flex items-center justify-center"><p class="font-medium text-gray-100" id="headlessui-label-:r9:">Under</p><input type="hidden" value="Under"></div></div></div></div></div>"
+`;

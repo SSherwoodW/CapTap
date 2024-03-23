@@ -41,8 +41,11 @@ router.post("/", ensureAdmin, async function (req, res, next) {
         const response = await axios.get(
             `https://api.sportradar.com/nba/trial/v8/en/games/2023/REG/schedule.json?api_key=${API_KEY}`
         );
+        console.log("response is requested", response);
+        console.log(parseGameData(response));
 
         const games = parseGameData(response);
+        console.log("games in route", games);
 
         let dBInsertion = await Game.addAll(games);
         res.json(dBInsertion);

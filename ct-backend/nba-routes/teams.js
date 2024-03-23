@@ -1,12 +1,7 @@
 const axios = require("axios");
 const express = require("express");
-const {
-    ensureCorrectUserOrAdmin,
-    ensureAdmin,
-    ensureLoggedIn,
-} = require("../middleware/auth");
+const { ensureAdmin, ensureLoggedIn } = require("../middleware/auth");
 const { parseTeamData } = require("../helpers/api");
-const { BadRequestError } = require("../expressError");
 
 const Team = require("../models/team");
 
@@ -35,6 +30,7 @@ router.post("/", ensureAdmin, async function (req, res, next) {
         const response = await axios.get(
             `${apiUrl}/league/hierarchy.json?api_key=${API_KEY}`
         );
+        console.log(response);
         teams = parseTeamData(response);
         console.log(teams);
         let dBInsertion = await Team.addAll(teams);
@@ -79,13 +75,17 @@ router.get("/:criteria", ensureLoggedIn, async function (req, res, next) {
 
         if (!isNaN(req.params.criteria)) {
             criteria.id = parseInt(req.params.criteria);
-        } else if (req.params.criteria.length === 3) {
+        } else if (
+            req.params.criteria.length > 1 &&
+            req.params.criteria.length <= 3
+        ) {
             criteria.code = req.params.criteria.toUpperCase();
         } else if (req.params.criteria.length > 30) {
             criteria.apiId = req.params.criteria;
         } else {
             criteria.name = req.params.criteria;
         }
+        console.log(criteria);
         const team = await Team.findBy(criteria);
         console.log(team);
 

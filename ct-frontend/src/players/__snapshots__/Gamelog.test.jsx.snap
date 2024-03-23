@@ -1,0 +1,196 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Gamelog > matches snapshot 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="grid bg-gray-200 rounded-sm p-4 mb-4 text-center overflow-x-auto max-w-full"
+      >
+        <h3
+          class="text-xl bg-indigo-500 text-white mb-2 p-2 rounded-t-sm"
+        >
+          Game Log
+        </h3>
+        <div
+          class="border-b-2 border-indigo-600 mb-2"
+        />
+        <div
+          class="grid grid-cols-10 bg-gray-300 p-3 "
+        >
+          <div
+            class="text-sm font-bold text-gray-700"
+          >
+            Date
+          </div>
+          <div
+            class="text-sm font-bold text-gray-700"
+          >
+            Opponent
+          </div>
+          <div
+            class="text-sm font-bold text-gray-700"
+          >
+            Minutes
+          </div>
+          <div
+            class="text-sm font-bold text-gray-700"
+          >
+            Points
+          </div>
+          <div
+            class="text-sm font-bold text-gray-700"
+          >
+            Rebounds
+          </div>
+          <div
+            class="text-sm font-bold text-gray-700"
+          >
+            Assists
+          </div>
+          <div
+            class="text-sm font-bold text-gray-700"
+          >
+            Turnovers
+          </div>
+          <div
+            class="text-sm font-bold text-gray-700"
+          >
+            Steals
+          </div>
+          <div
+            class="text-sm font-bold text-gray-700"
+          >
+            Blocks
+          </div>
+          <div
+            class="text-sm font-bold text-gray-700"
+          >
+            3pm/att
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="grid bg-gray-200 rounded-sm p-4 mb-4 text-center overflow-x-auto max-w-full"
+    >
+      <h3
+        class="text-xl bg-indigo-500 text-white mb-2 p-2 rounded-t-sm"
+      >
+        Game Log
+      </h3>
+      <div
+        class="border-b-2 border-indigo-600 mb-2"
+      />
+      <div
+        class="grid grid-cols-10 bg-gray-300 p-3 "
+      >
+        <div
+          class="text-sm font-bold text-gray-700"
+        >
+          Date
+        </div>
+        <div
+          class="text-sm font-bold text-gray-700"
+        >
+          Opponent
+        </div>
+        <div
+          class="text-sm font-bold text-gray-700"
+        >
+          Minutes
+        </div>
+        <div
+          class="text-sm font-bold text-gray-700"
+        >
+          Points
+        </div>
+        <div
+          class="text-sm font-bold text-gray-700"
+        >
+          Rebounds
+        </div>
+        <div
+          class="text-sm font-bold text-gray-700"
+        >
+          Assists
+        </div>
+        <div
+          class="text-sm font-bold text-gray-700"
+        >
+          Turnovers
+        </div>
+        <div
+          class="text-sm font-bold text-gray-700"
+        >
+          Steals
+        </div>
+        <div
+          class="text-sm font-bold text-gray-700"
+        >
+          Blocks
+        </div>
+        <div
+          class="text-sm font-bold text-gray-700"
+        >
+          3pm/att
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

@@ -11,7 +11,6 @@ function Home() {
     const location = useLocation();
     const isHomePage = location.pathname === '/';
 
-    console.log('home mount');
     return (
         <div>
             <Navigation />

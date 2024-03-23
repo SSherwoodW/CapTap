@@ -5,44 +5,45 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
 import CapTapApi from '../../../api';
 
-export default function PlayersSearch({ handlePlayerClick }) {
-    const [selected, setSelected] = useState({ player: { name: 'Devin Booker' } });
+export default function NavBarSearch({ searchType, handleSearchClick }) {
+    const [selected, setSelected] = useState({ name: '' });
     const [query, setQuery] = useState('');
-    const [players, setPlayers] = useState(null);
+    const [data, setData] = useState(null);
     
-    // Get all players on component mount.
+    // Get all players OR teams on component mount.
     useEffect( () => {
-        const fetchPlayers = async () => {
+        const fetchData = async () => {
             try {
-                const players = await CapTapApi.getPlayers();
-                setPlayers(players);
-                console.log(players);
+                const data = searchType === "players"
+                    ? await CapTapApi.getPlayers()
+                    : await CapTapApi.getTeams();
+                setData(data);
             } catch (err) {
-                console.error('Error fetching players:', err);
+                console.error(`Error fetching ${searchType}:`, err);
             }
         }; 
-        fetchPlayers();
-    }, []);
+        fetchData();
+    }, [searchType]);
 
-    const filteredPlayers =
+    const filteredData =
         query === ''
-            ? players
-            : players.filter((player) =>
-                player.name
+            ? data
+            : data.filter((item) =>
+                item.name
                     .toLowerCase()
                     .replace(/\s+/g, '')
                     .includes(query.toLowerCase().replace(/\s+/g, ''))
             );
 
     return (
-        <div className="fixed top-16 w-72">
-            {players && (
+        <div className="absolute w-72">
+            {data && (
                 <Combobox value={selected} onChange={setSelected}>
-                    <div className="relative mt-1">
+                    <>
                         <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                             <Combobox.Input
                                 className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                                displayValue={(player) => player.name}
+                                displayValue={(item) => item.name}
                                 onChange={(event) => setQuery(event.target.value)}
                             />
                             <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -60,24 +61,24 @@ export default function PlayersSearch({ handlePlayerClick }) {
                             afterLeave={() => setQuery('')}
                         >
                                 <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                                    {filteredPlayers.length === 0 && query !== '' ? (
+                                    {filteredData.length === 0 && query !== '' ? (
                                         <div className="relative cursor-default select-none px-4 py-2 text-gray-700">
-                                            No players found.
+                                            No {searchType} found.
                                         </div>
                                     ) : (
-                                        filteredPlayers.map((player) => (
+                                        filteredData.map((item) => (
                                             <Link
-                                                key={player.id}
-                                                to={`/players/${player.id}`}
-                                                onClick={handlePlayerClick}
-                                                onKeyDown={handlePlayerClick}
+                                                key={item.id}
+                                                to={`/${searchType}/${item.id}`}
+                                                onClick={handleSearchClick}
+                                                onKeyDown={handleSearchClick}
                                             >
                                                 <Combobox.Option
                                                     className={({ active }) =>
                                                         `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-teal-600 text-white' : 'text-gray-900'
                                                         }`
                                                     }
-                                                    value={player}
+                                                    value={item}
                                                 >
                                                     {({ selected, active }) => (
                                                         <>
@@ -85,7 +86,7 @@ export default function PlayersSearch({ handlePlayerClick }) {
                                                                 className={`block truncate ${selected ? 'font-medium' : 'font-normal'
                                                                     }`}
                                                             >
-                                                                {player.name}
+                                                                {item.name}
                                                             </span>
                                                             {selected ? (
                                                                 <span
@@ -103,7 +104,7 @@ export default function PlayersSearch({ handlePlayerClick }) {
                                     )}
                                 </Combobox.Options>
                         </Transition>
-                    </div>
+                    </>
                 </Combobox>
             )}
         </div>

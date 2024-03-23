@@ -1,25 +1,20 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 import { Menu } from "@headlessui/react";
-import { useAuth } from "../auth/authContext";
-
+import { AuthContext } from "../auth/authContext";
 
 import PlayerGraph from "./PlayerGraph";
 import SaveToJournalModal from "../journal/SaveToJournalModal";
 import GameRange from "./helpers/GameRange";
-import formatDate from "../hooks/formatDate";
 import OverUnderToggle from "./helpers/OverUnderToggle";
-// import generatePlayerGraphData, { generateAllGraphData } from "./helpers/GraphGenerator";
+import generateAllGraphData from "./helpers/graphUtils";
+import calculateStats from "./helpers/Correlator";
+
 import CapTapApi from "../../../api";
-import LoadingSpinner from "../common/LoadingSpinner";
-
-
-
 
 function Parlayer() {
     const { code } = useParams();
-    // const { currentUser } = useContext(AuthContext);
-    const { currentUser } = useAuth();
+    const { currentUser } = useContext(AuthContext);
 
     //********************************************************************************* */
     //***********************     STATE SECTION      ********************************** */
@@ -47,37 +42,18 @@ function Parlayer() {
     const [journalData, setJournalData] = useState(null);
     // journal entry description string
     const [description, setDescription] = useState("");
+    // correlation & player stat analysis
+    const [correlatorData, setCorrelatorData] = useState([]);
 
     const navigate = useNavigate();
     const { state } = useLocation();
     const { player1Id, player2Id } = state || {};
 
-
-    //********************************************************************************* */
-    //**********************    HELPERS SECTION    ************************************ */
-    //********************************************************************************* */
-
-    const statMap = {
-            'Points': 'points',
-            'Assists': 'assists',
-            'Rebounds': 'rebounds',
-            'Blocks': 'blocks',
-            'Steals': 'steals',
-            'Turnovers': 'turnovers',
-            '3PM': 'threepointsmade'
-        };
-
-    const rangeMap = {
-            'L5': 5,
-            'L10': 10,
-            'L20': 20,
-            'Season': Infinity
-        };
-    
     //********************************************************************************* */
     //*******************    PLAYERS/TEAMS SECTION    ********************************* */
     //********************************************************************************* */
     
+    // if user came from a player page, set player data and team data from params/useLocation. 
     useEffect(() => {
         if (CapTapApi.token) {
             const fetchData = async () => {
@@ -129,7 +105,6 @@ function Parlayer() {
     useEffect(() => {
         const fetchPlayerData = async () => {
             const playerDataArray = await Promise.all(playerIds.map(id => CapTapApi.getPlayer(id)));
-            console.log(playerDataArray);
             setSelectedPlayerData(playerDataArray);
         };
 
@@ -193,56 +168,14 @@ function Parlayer() {
     //********************    GRAPH GENERATION SECTION    ***************************** */
     //********************************************************************************* */
 
-    // Get boxscores for [selectedRange] # games.
-    // Get array of [selectedStat] values from those boxscores.
-    // Determine bar color based on if each stat in above array is [over/under]
-    // ...[values]
-    const generatePlayerGraphData = (playerId) => {
-
-        const range = rangeMap[selectedRange];
-
-        const data = selectedStats.find(([id]) => id === playerId);
-        const statType = data ? statMap[data[1]] : null;
-
-        const playerData = selectedPlayerData.filter(player => player.id === playerId);
-        const graphData = playerData[0].boxscores
-            .slice(0, range)
-            .reverse()
-            .map(obj => ({
-                x: formatDate(obj.gamedate),
-                y: obj.minutes === '00:00' ? null : obj[statType],
-                opponent: obj.opposing_team
-            }));
-        console.debug("playerData valuesToGraph", graphData);
-        
-        return graphData;
-    };
-
-    const generateAllGraphData = () => {
-        const newData = [];
-
-        selectedPlayerData.forEach((player) => {
-            const playerId = player.id;
-            const statValue = values.find(([id]) => id === playerId);
-            const overOrUnder = overUnders.find(([id]) => id === playerId);
-            const selectedStat = selectedStats.find(([id]) => id === playerId);
-            const range = rangeMap[selectedRange];
-
-            if (selectedRange && selectedStat && statValue && overOrUnder) {
-                const playerData = generatePlayerGraphData(playerId);
-                newData.push({ playerId, data: playerData, value: Number(statValue[1]), overUnder: overOrUnder[1], selectedStat: selectedStat[1], range: range});
-            };
-            console.log("genAllGraphData newData:", newData);
-        });
-        return newData;
-    };
-
     useEffect(() => {
         if (selectedRange && selectedStats && values && overUnders) {
-            const newData = generateAllGraphData(rangeMap, selectedRange, selectedPlayerData, values, overUnders, selectedStats);
+            const newData = generateAllGraphData(selectedPlayerData, values, overUnders, selectedStats, selectedRange);
+            const correlatedData = calculateStats(newData);
             setPlayerGraphData(newData);
-            console.log("playerGraphData useEffect", playerGraphData);
+            setCorrelatorData(correlatedData);
             console.log("journalEntry in useEffect", journalData);
+            console.log("correlatorData", correlatorData, "length", correlatorData.length)
         }
     }, [selectedRange, selectedStats, values, overUnders]);
 
@@ -250,26 +183,35 @@ function Parlayer() {
     //*******************     JOURNAL SECTION      ************************************ */
     //********************************************************************************* */
 
-    const saveToJournal = async () => {
-        const journalEntry = {
-            data: {
-                playerIds: playerIds,
-                statCats: selectedStats,
-                values: values,
-                overUnders: overUnders,
-            },
-            range: selectedRange,
-            description: description,
-            userId: currentUser.id
-        };
-        if (description) {
-            setJournalData(journalEntry); 
-        };
-    };
+    // const saveToJournal = async () => {
+    //     const journalEntry = {
+    //         data: {
+    //             playerIds: playerIds,
+    //             statCats: selectedStats,
+    //             values: values,
+    //             overUnders: overUnders,
+    //         },
+    //         range: selectedRange,
+    //         description: description,
+    //         userId: currentUser.id
+    //     };
+    //     if (description) {
+    //         setJournalData(journalEntry);
+    //     };
+    // };
     
-    const handleDescriptionChange = (value) => {
-        setDescription(value);
-    }
+    // const handleDescriptionChange = (value) => {
+    //     setDescription(value);
+    // }
+    
+    const saveJournalEntry = async (data) => {
+        try {
+            await CapTapApi.saveJournalEntry(currentUser.username, data);
+            setJournalData(data);
+        } catch (error) {
+            console.error('Error saving journal entry:', error);
+        }
+    };
 
     useEffect(() => {
         if (journalData) {
@@ -284,16 +226,16 @@ function Parlayer() {
     return (
         <div>
             <div className="flex flex-col md:flex-row">
-                <div className="flex-grow bg-indigo-500 border-2 border-indigo-300 shadow-lg">
-                    <div className="relative m-4 p-4">
-                        <div className="flex justify-between items-center sm:grid-rows-3 text-gray-800">
-                            <h4 className="Parlayer-header text-5xl font-extralight uppercase p-4 shadow-md bg-indigo-400 rounded-sm border-2 border-indigo-300 mr-4">Parlayer</h4>
+                <div className="flex-grow bg-gray-300 border-8 border-gray-800 shadow-lg">
+                    <div className="relative mx-6 my-2">
+                        <div className="flex justify-between items-center text-gray-800">
+                            <h4 className="Parlayer-header text-5xl font-extralight uppercase p-4 shadow-md bg-indigo-400 rounded-sm border-2 border-indigo-300">Parlayer</h4>
                             <div className="shadow-md rounded-sm">
                                 <GameRange selectedOption={selectedRange} handleClick={(range) => handleRangeClick(range)} />
                             </div>
-                            <div className="">
-                                <label htmlFor="team-select" className="text-center mr-2">Choose a team:</label>
-                                <select id="team-select" value={team?.code || ''} onChange={handleTeamChange} className="border-indigo-300 bg-gray-500 rounded-md justify-center gap-x-1.5 py-2 px-2 text-m font-normal text-gray-900 text-center shadow-md ring-1 ring-inset ring-gray-300 hover:bg-gray-700 ">
+                            <div className="flex flex-col items-center p-2 border-2 border-gray-200 bg-gray-400">
+                                <label htmlFor="team-select" className="text-center uppercase bg-indigo-400 px-6 mb-2 shadow-md rounded-sm ">Choose a team</label>
+                                <select id="team-select" value={team?.code || ''} onChange={handleTeamChange} className="border-indigo-300 bg-gray-400 rounded-md justify-center gap-x-1.5 py-2 px-2 text-m font-normal text-gray-900 text-center shadow-md ring-1 ring-inset ring-gray-300 hover:bg-gray-700 ">
                                 
                                     <option value="">Select Team</option>
                                 {teams.map((team) => (
@@ -307,29 +249,75 @@ function Parlayer() {
                     </div>
                 </div>
             </div>
-            {playerGraphData.length > 0 && (
-                <div className="flex justify-center mt-4">
-                    {/* <button
-                        onClick={saveToJournal}
-                        className="flex rounded-sm p-4 bg-gray-500 border-2 border-gray-400 text-gray-900 text-lg shadow-md hover:bg-gray-400 hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                        </svg>
-                        <p className="ml-2">Save To Journal</p>
-                    </button> */}
-                    <SaveToJournalModal onSave={saveToJournal} onDescriptionChange={ handleDescriptionChange } />
-                </div>
-            )}
             {team && (
-                <div className="mt-2 mx-0">
-
-                    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-4 overflow-x-auto shadow-lg">
+                <div className="">
+                    <div id="action-buttons" className="grid grid-cols-7 items-center bg-indigo-200 border-indigo-700 border-2">
+                        <div className="col-start-1 m-2">
+                            <Menu as="div" className="relative">
+                                <Menu.Button className="flex rounded-sm p-4 bg-gray-500 border-2 border-gray-400 text-gray-900 text-lg shadow-md hover:bg-gray-400 hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                    <p className="ml-2"> Add Player</p>
+                                </Menu.Button>
+                                <Menu.Items className="absolute mt-2 w-48 bg-gray-800 rounded-md shadow-lg text-gray-100 z-50">
+                                    {team.players
+                                        .filter(player => !playerIds.includes(player.id))
+                                        .map((player) => (
+                                            <Menu.Item key={player.id}>
+                                                {({ active }) => (
+                                                    <button
+                                                        className={`block w-full px-4 py-2 text-center ${
+                                                            active ? 'bg-gray-700' : 'hover:bg-gray-700'
+                                                        }`}
+                                                        onClick={() => handlePlayerClick(player.id)}
+                                                    >
+                                                        {player.full_name}
+                                                    </button>
+                                                )}
+                                            </Menu.Item>
+                                        ))}
+                                </Menu.Items>
+                            </Menu>
+                        </div>
+                        <div className="col-start-2 col-span-2">
+                            {playerGraphData.length > 0 && (
+                                <div className="">
+                                    <SaveToJournalModal
+                                        entry={null}
+                                        saveJournalEntry={saveJournalEntry}
+                                        playerIds={playerIds}
+                                        selectedStats={selectedStats}
+                                        values={values}
+                                        overUnders={overUnders}
+                                        selectedRange={selectedRange}
+                                    />
+                                </div>
+                            )}
+                        </div>
+                        <div className="col-start-7">
+                        {correlatorData !== 'oopsy doopsy!' && (
+                                <div className="grid-cols rounded-sm mx-6 my-2 bg-gray-200 border-2 border-gray-400 text-gray-900 text-lg shadow-md">
+                                    <div className="">
+                                        <div className="grid grid-cols-1 text-center">
+                                            <div>Correlation Rate</div>
+                                            {playerIds.length < 2 ?
+                                                <div className="text-indigo-400 font-thin text-sm italic">Add more players to correlate</div> :
+                                                <div className="text-indigo-400 font-bold text-xl">{correlatorData.slice(-1)}%</div>
+                                            }
+                                        </div>
+                                        {/* {correlatorData.length <= 2 ? : 'b'} */}
+                                    </div>
+                                </div>
+                        )}
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-0 overflow-x-auto shadow-xl">
                     {/* Render a section for each selected player */}
                         {selectedPlayerData.map((player, index) => (
-                        <div key={player.apiid} >
+                        <div key={player.apiid} data-testid="player-section">
                             <div>
-                                <div className="flex bg-gray-400 p-2 text-center rounded-t-sm justify-between items-center overflow-x-auto">
+                                <div className="flex bg-gray-400 p-2 text-center rounded-t-sm justify-between items-center overflow-x-auto border-t-2 border-indigo-700">
                                     <div className="text-gray-900 uppercase text-2xl underline decoration-1 underline-offset-4 flex items-center ml-12">
                                         <Link to={`/players/${player.id}`}><span className="mr-10">{player.fullname}</span></Link>
                                     </div>
@@ -356,10 +344,10 @@ function Parlayer() {
                                                 onChange={(value) => handleOverUnderChange(player.id, value)}
                                             />
                                         </div>
-                                        <div className="flex flex-col bg-gray-400 rounded-sm mr-12 mt-8 mb-8">
-                                            <label htmlFor="stat-line-input">Stat Amount</label>
+                                        <div className="flex flex-col bg-gray-400 rounded-sm mr-12 mt-4">
+                                            <label htmlFor={`stat-line-input ${player.id}`}>Stat Amount</label>
                                             <input
-                                                id="stat-line-input"
+                                                id={`stat-line-input ${player.id}`}
                                                 type="number"
                                                 placeholder="Set Value"    
                                                 value={values.find(([id]) => id === player.id)?.[1] || ''}
@@ -370,52 +358,32 @@ function Parlayer() {
                                     </div>
                                 </div>      
                             </div>
-                        <div className="bg-gray-800 h-64 rounded-b-md flex items-center justify-between relative">
-                            <div className="">
-                                <PlayerGraph playerGraphData={playerGraphData} player={player} />
-                            </div>
-                            <button
-                                className="mr-4 p-4 bg-gray-500 text-gray-900 uppercase border-2 border-gray-400 shadow-md hover:text-gray-300 hover:bg-red hover:bg-opacity-70 hover:ring-2 hover:ring-gray-300 focus:ring-1 focus:ring-white focus:ring-offset-1"
-                                onClick={() => handleRemovePlayer(player.id, player.apiid)}
+                            <div 
+                                className={`bg-gray-200 flex items-center justify-between relative border-t-0 border-indigo-700 rounded-b-sm
+                                ${correlatorData === 'oopsy doopsy!' ? 'h-12' : 'h-64'}`}
                             >
-                                Remove
-                            </button>
+                                <div className="ml-1">
+                                    <PlayerGraph playerGraphData={playerGraphData} player={player} hitStats={correlatorData} />
+                                </div>
+                                <div>
+                                    <div>
+                                        
+                                    </div>        
+                                    <button
+                                        className={`mx-2 bg-gray-500 text-gray-900 uppercase border-2 border-gray-400 shadow-md hover:text-gray-300 hover:bg-red hover:bg-opacity-70 hover:ring-2 hover:ring-gray-300 focus:ring-1 focus:ring-white focus:ring-offset-1
+                                        ${correlatorData === 'oopsy doopsy!' ? 'p-1' : 'p-4'}`}
+                                        // className="mx-2 p-4 bg-gray-500 text-gray-900 uppercase border-2 border-gray-400 shadow-md hover:text-gray-300 hover:bg-red hover:bg-opacity-70 hover:ring-2 hover:ring-gray-300 focus:ring-1 focus:ring-white focus:ring-offset-1"
+                                        onClick={() => handleRemovePlayer(player.id, player.apiid)}
+                                    >
+                                        Remove
+                                    </button>
+                                </div>
                             </div>
                         </div>          
                     ))}
                 </div>
-                <div className="flex justify-center mt-4">
-                    <Menu as="div" className="relative">
-                        <Menu.Button className="flex rounded-sm p-4 bg-gray-500 border-2 border-gray-400 text-gray-900 text-lg shadow-md hover:bg-gray-400 hover:ring-2 hover:ring-gray-300 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                            </svg>
-                            <p className="ml-2"> Add Player</p>
-                        </Menu.Button>
-                        <Menu.Items className="absolute  mt-2 w-48 bg-gray-800 rounded-md shadow-lg text-gray-100">
-                            {team.players
-                                .filter(player => !playerIds.includes(player.id))
-                                .map((player) => (
-                                    <Menu.Item key={player.id}>
-                                        {({ active }) => (
-                                            <button
-                                                className={`block w-full px-4 py-2 text-center ${
-                                                    active ? 'bg-gray-700' : 'hover:bg-gray-700'
-                                                }`}
-                                                onClick={() => handlePlayerClick(player.id)}
-                                            >
-                                                {player.full_name}
-                                            </button>
-                                        )}
-                                    </Menu.Item>
-                                ))}
-                        </Menu.Items>
-                    </Menu>
-                </div>
             </div>
             )}
-
-            
             </div>
     )
 }

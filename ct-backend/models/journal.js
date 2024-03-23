@@ -21,36 +21,58 @@ class Journal {
      **/
 
     static async post(userId, data) {
-        const { description, range, journalPlayersData } = data;
+        try {
+            const { description, range, journalPlayersData } = data;
+            console.log(range, description, journalPlayersData);
 
-        const journalResult = await db.query(
-            `INSERT INTO journals (user_id, description, range)
+            const journalResult = await db.query(
+                `INSERT INTO journals (user_id, description, range)
            VALUES ($1, $2, $3)
            RETURNING id, description, range, created_at`,
-            [userId, description, range]
-        );
+                [userId, description, range]
+            );
 
-        const journalEntry = journalResult.rows[0];
+            const journalEntry = journalResult.rows[0];
+            console.log(journalEntry);
 
-        if (!journalEntry)
-            throw BadRequestError(`Unable to post journal entry.`);
+            if (!journalEntry)
+                throw BadRequestError(`Unable to post journal entry.`);
 
-        const playerInsertPromises = journalPlayersData.map(
-            async (playerData) => {
-                const { playerId, statCategory, overUnder, value } = playerData;
-                const playerResult = await db.query(
-                    `INSERT INTO journal_players (journal_id, player_id, stat_category, over_under, value)
+            const playerInsertPromises = journalPlayersData.map(
+                async (playerData) => {
+                    const { playerId, statCategory, overUnder, value } =
+                        playerData;
+
+                    console.log(playerId, statCategory, overUnder, value);
+                    const playerResult = await db.query(
+                        `INSERT INTO journal_players (journal_id, player_id, stat_category, over_under, value)
                  VALUES ($1, $2, $3, $4, $5)
                  RETURNING journal_id, player_id, stat_category, over_under, value`,
-                    [journalEntry.id, playerId, statCategory, overUnder, value]
-                );
-                return playerResult.rows[0];
-            }
-        );
+                        [
+                            journalEntry.id,
+                            playerId,
+                            statCategory,
+                            overUnder,
+                            value,
+                        ]
+                    );
+                    return playerResult.rows[0];
+                }
+            );
 
-        const journalPlayerEntries = await Promise.all(playerInsertPromises);
+            const journalPlayerEntries = await Promise.all(
+                playerInsertPromises
+            );
+            console.log("journalPlayerEntries", playerInsertPromises);
 
-        return { ...journalEntry, journalPlayersData: journalPlayerEntries };
+            return {
+                ...journalEntry,
+                journalPlayersData: journalPlayerEntries,
+            };
+        } catch (err) {
+            console.log("err", err);
+            throw new BadRequestError("unable to add journal entry");
+        }
     }
 
     /** Get a specific journal entry
@@ -61,8 +83,9 @@ class Journal {
      */
 
     static async find(journalId) {
-        const result = await db.query(
-            `SELECT j.id,
+        try {
+            const result = await db.query(
+                `SELECT j.id,
                     j.user_id AS userId,
                     j.description,
                     j.range,
@@ -74,35 +97,40 @@ class Journal {
             FROM journals j
             LEFT JOIN journal_players jp ON j.id = jp.journal_id
             WHERE j.id = $1`,
-            [journalId]
-        );
+                [journalId]
+            );
 
-        if (!result.rows.length)
+            if (!result.rows.length)
+                throw new NotFoundError(
+                    `Journal entry with ID ${journalId} not found.`
+                );
+
+            const groupedData = result.rows.reduce((acc, row) => {
+                if (!acc.id) {
+                    acc.id = row.id;
+                    acc.userId = row.userid;
+                    acc.description = row.description;
+                    acc.range = row.range;
+                    acc.createdAt = row.createdat;
+                    acc.journalPlayersData = [];
+                }
+                if (row.player_id) {
+                    acc.journalPlayersData.push({
+                        playerId: row.player_id,
+                        statCategory: row.stat_category,
+                        overUnder: row.over_under,
+                        value: row.value,
+                    });
+                }
+                return acc;
+            }, {});
+
+            return groupedData;
+        } catch (err) {
             throw new NotFoundError(
                 `Journal entry with ID ${journalId} not found.`
             );
-
-        const groupedData = result.rows.reduce((acc, row) => {
-            if (!acc.id) {
-                acc.id = row.id;
-                acc.userId = row.userId;
-                acc.description = row.description;
-                acc.range = row.range;
-                acc.createdAt = row.createdAt;
-                acc.journalPlayersData = [];
-            }
-            if (row.player_id) {
-                acc.journalPlayersData.push({
-                    playerId: row.player_id,
-                    statCategory: row.stat_category,
-                    overUnder: row.over_under,
-                    value: row.value,
-                });
-            }
-            return acc;
-        }, {});
-
-        return groupedData;
+        }
     }
 
     /** Get all entries from all users
@@ -113,8 +141,9 @@ class Journal {
      */
 
     static async findAll() {
-        const result = await db.query(
-            `SELECT j.id,
+        try {
+            const result = await db.query(
+                `SELECT j.id,
                     j.user_id AS userId,
                     j.description,
                     j.range,
@@ -126,37 +155,39 @@ class Journal {
             FROM journals j
             LEFT JOIN journal_players jp ON j.id = jp.journal_id
             ORDER BY created_at`
-        );
+            );
 
-        if (!result.rows.length)
-            throw new NotFoundError(`No journal entries found.`);
+            if (!result.rows.length)
+                throw new NotFoundError(`No journal entries found.`);
 
-        const groupedData = {};
+            const groupedData = {};
 
-        result.rows.forEach((row) => {
-            const journalId = row.id;
-            if (!groupedData[journalId]) {
-                groupedData[journalId] = {
-                    id: journalId,
-                    userId: row.userId,
-                    description: row.description,
-                    range: row.range,
-                    createdAt: row.createdAt,
-                    journalPlayersData: [],
-                };
-            }
+            result.rows.forEach((row) => {
+                const journalId = row.id;
+                if (!groupedData[journalId]) {
+                    groupedData[journalId] = {
+                        id: journalId,
+                        userId: row.userid,
+                        description: row.description,
+                        range: row.range,
+                        createdAt: row.createdat,
+                        journalPlayersData: [],
+                    };
+                }
+                if (row.player_id) {
+                    groupedData[journalId].journalPlayersData.push({
+                        playerId: row.player_id,
+                        statCategory: row.stat_category,
+                        overUnder: row.over_under,
+                        value: row.value,
+                    });
+                }
+            });
 
-            if (row.player_id) {
-                groupedData[journalId].journalPlayersData.push({
-                    playerId: row.player_id,
-                    statCategory: row.stat_category,
-                    overUnder: row.over_under,
-                    value: row.value,
-                });
-            }
-        });
-
-        return Object.values(groupedData);
+            return Object.values(groupedData);
+        } catch (err) {
+            throw new NotFoundError("unable to find any journal entries.");
+        }
     }
 
     /** Get all entries from a single user
@@ -169,8 +200,10 @@ class Journal {
      */
 
     static async findUserEntries(username) {
-        const result = await db.query(
-            `SELECT j.id,
+        try {
+            const result = await db.query(
+                `SELECT j.id,
+                    j.user_id AS userId,
                     j.description,
                     j.range,
                     j.created_at AS createdAt,
@@ -183,38 +216,41 @@ class Journal {
             JOIN users u ON j.user_id = u.id
             WHERE u.username = $1
             ORDER BY created_at`,
-            [username]
-        );
+                [username]
+            );
 
-        if (!result.rows.length)
+            if (!result.rows.length)
+                throw new NotFoundError(`No journal entries found.`);
+
+            const groupedData = {};
+
+            result.rows.forEach((row) => {
+                const journalId = row.id;
+                if (!groupedData[journalId]) {
+                    groupedData[journalId] = {
+                        id: journalId,
+                        userId: row.userid,
+                        description: row.description,
+                        range: row.range,
+                        createdAt: row.createdAt,
+                        journalPlayersData: [],
+                    };
+                }
+
+                if (row.player_id) {
+                    groupedData[journalId].journalPlayersData.push({
+                        playerId: row.player_id,
+                        statCategory: row.stat_category,
+                        overUnder: row.over_under,
+                        value: row.value,
+                    });
+                }
+            });
+
+            return Object.values(groupedData);
+        } catch (err) {
             throw new NotFoundError(`No journal entries found.`);
-
-        const groupedData = {};
-
-        result.rows.forEach((row) => {
-            const journalId = row.id;
-            if (!groupedData[journalId]) {
-                groupedData[journalId] = {
-                    id: journalId,
-                    userId: row.userId,
-                    description: row.description,
-                    range: row.range,
-                    createdAt: row.createdAt,
-                    journalPlayersData: [],
-                };
-            }
-
-            if (row.player_id) {
-                groupedData[journalId].journalPlayersData.push({
-                    playerId: row.player_id,
-                    statCategory: row.stat_category,
-                    overUnder: row.over_under,
-                    value: row.value,
-                });
-            }
-        });
-
-        return Object.values(groupedData);
+        }
     }
 
     /** Update journal entry [description]
@@ -229,19 +265,46 @@ class Journal {
      *
      */
 
-    static async update(description, journalId) {
-        const result = await db.query(
-            `UPDATE journals
-        SET description = $1
-        WHERE id = $2
-        RETURNING user_id, description, created_at`,
-            [description, journalId]
-        );
+    static async update(journalId, description) {
+        try {
+            const journalExists = await db.query(
+                `SELECT * FROM journals WHERE id = $1`,
+                [journalId]
+            );
 
-        if (!result.rows)
-            throw new BadRequestError("Entry not found:", journalId);
+            if (journalExists.rows.length === 0)
+                throw new BadRequestError("No journal entries with that id");
 
-        return result.rows;
+            const result = await db.query(
+                `UPDATE journals
+                SET description = $1
+                WHERE id = $2
+                RETURNING user_id AS userId, description, created_at AS createdAt`,
+                [description, journalId]
+            );
+
+            if (!result.rows)
+                throw new BadRequestError("Entry not updated:", journalId);
+
+            return result.rows;
+        } catch (err) {
+            throw new BadRequestError("Entry not updated:", journalId);
+        }
+    }
+
+    /** Delete journal entry */
+
+    static async delete(journalId) {
+        try {
+            const res = await db.query(
+                `DELETE FROM journals
+                WHERE id = $1`,
+                [journalId]
+            );
+            return "Journal entry deleted.";
+        } catch (err) {
+            throw new BadRequestError("Unable to delete journal entry");
+        }
     }
 }
 

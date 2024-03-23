@@ -46,8 +46,9 @@ function PlayerDetail() {
         const fetchedTeam = await CapTapApi.findTeam(fetchedPlayer.name);
             setTeamCode(fetchedTeam.code);
 
-        const logoUrl = `../public/nba-logos/${fetchedPlayer.name}.png`;
+        const logoUrl = `../nba-logos/${fetchedPlayer.name}.png`;
             setTeamLogo(logoUrl);
+        console.log(logoUrl);
     }
 
     getPlayer();
@@ -63,10 +64,10 @@ function PlayerDetail() {
     return (
     <div className="flex flex-col md:flex-row">
       <div className="flex-grow md:ml-2">
-        <div className="PlayerDetail mt-4 mx-4 p-4 rounded-sm border-4 border-gray-500">
-           <div className="flex justify-between items-center mb-6">
+        <div className="PlayerDetail mt-4 mx-2 p-4 rounded-sm border-4 border-gray-500">
+           <div className="flex justify-between items-center mb-4">
                 <h4 className="PlayerDetail playerName text-5xl font-thin uppercase text-gray-100">{player.fullname}</h4>
-                    <div className="flex items-center">
+                <div className="flex items-center p-2 px-4 bg-gray-500 rounded-sm border-gray-300 border-2">
                     <div className="PlayerDetail teamLogo">
                         <a
                             href={`/teams/${teamCode}`}
@@ -76,17 +77,17 @@ function PlayerDetail() {
                             <img
                                 className="max-h-12 w-auto"
                                 src={teamLogo}
-                                alt=""
+                                alt={`${player.name} Logo`}
                             />
                         </a>
                     </div>
-                <h4 className="PlayerDetail teamName text-3xl font-thin uppercase text-gray-100"><a href={`/teams/${teamCode}`}>{player.name}</a></h4>
+                    <h4 className="PlayerDetail teamName text-3xl font-thin uppercase text-gray-100"><a href={`/teams/${teamCode}`}>{player.name}</a></h4>
                 </div>
            </div>
           {averages && (
           <div>  
             <div className="bg-gray-200 rounded-sm p-4 mb-4 ">
-              <h3 className="text-xl font-thin bg-indigo-800 text-white mb-2 p-2 rounded-t-sm">Season Averages</h3>
+              <h3 className="text-xl font-thin bg-indigo-500 text-white mb-2 p-2 rounded-t-sm">Season Averages</h3>
               <div className="border-b-2 border-indigo-600 mb-2"></div>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {Object.entries(averages).map(([key, value]) => (
@@ -102,8 +103,7 @@ function PlayerDetail() {
             </div>
           </div>
               )}
-        </div>
-                   
+        </div>          
       </div>
       <PlayerSidebar players={player.teammates} teamCode={teamCode} playerId={id} />
     </div>

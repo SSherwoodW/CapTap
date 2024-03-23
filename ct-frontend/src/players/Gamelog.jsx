@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import formatDate from '../hooks/formatDate';
 
 /** Game Log Component
@@ -15,47 +14,48 @@ function GameLog ({ boxscores }){
     const visibleGames = showMore ? boxscores.length : 5;
 
   return (
-    <div className="bg-gray-200 rounded-sm p-4 mb-4 text-center overflow-x-auto max-w-full">
-      <h3 className="text-xl bg-indigo-800 text-white mb-2 p-2 rounded-t-sm">Game Log</h3>
+    <div className="grid bg-gray-200 rounded-sm p-4 mb-4 text-center overflow-x-auto max-w-full">
+      <h3 className="text-xl bg-indigo-500 text-white mb-2 p-2 rounded-t-sm">Game Log</h3>
       <div className="border-b-2 border-indigo-600 mb-2"></div>
 
       {/* Header row */}
-      <div className="header-row grid grid-cols-10 bg-gray-300 p-3">
-        <p className="text-sm font-bold text-gray-700">Date</p>
-        <p className="text-sm font-bold text-gray-700">Opponent</p>
-        <p className="text-sm font-bold text-gray-700">Minutes</p>
-        <p className="text-sm font-bold text-gray-700">Points</p>
-        <p className="text-sm font-bold text-gray-700">Rebounds</p>
-        <p className="text-sm font-bold text-gray-700">Assists</p>
-        <p className='text-sm font-bold text-gray-700'>Turnovers</p>
-        <p className="text-sm font-bold text-gray-700">Steals</p>
-        <p className="text-sm font-bold text-gray-700">Blocks</p>
-        <p className="text-sm font-bold text-gray-700">3pm/att</p>
+      <div className="grid grid-cols-10 bg-gray-300 p-3 ">
+        <div className="text-sm font-bold text-gray-700">Date</div>
+        <div className="text-sm font-bold text-gray-700">Opponent</div>
+        <div className="text-sm font-bold text-gray-700">Minutes</div>
+        <div className="text-sm font-bold text-gray-700">Points</div>
+        <div className="text-sm font-bold text-gray-700">Rebounds</div>
+        <div className="text-sm font-bold text-gray-700">Assists</div>
+        <div className='text-sm font-bold text-gray-700'>Turnovers</div>
+        <div className="text-sm font-bold text-gray-700">Steals</div>
+        <div className="text-sm font-bold text-gray-700">Blocks</div>
+        <div className="text-sm font-bold text-gray-700">3pm/att</div>
       </div>
 
       {/* Game log rows */}
       {boxscores.slice(0, visibleGames).map((game, index) => (
         <div
+          id={formatDate(game.gamedate)}
           key={index}
-          className={`grid grid-cols-10 p-3 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}
+          className={`grid grid-cols-10 p-3 place-items-center ${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}
         >
-          <p className="text-sm text-gray-700">{formatDate(game.gamedate)}</p>
-          <p className="text-sm text-gray-700">{game.opposing_team}</p>
-          <p className="text-sm text-gray-700">{game.minutes === '00:00' ? <b>DNP</b> : game.minutes}</p>
-          <p className="text-sm text-gray-700">{game.minutes === '00:00' ? '--' : game.points}</p>
-          <p className="text-sm text-gray-700">{game.minutes === '00:00' ? '--' : game.rebounds}</p>
-          <p className="text-sm text-gray-700">{game.minutes === '00:00' ? '--' : game.assists}</p>
-          <p className="text-sm text-gray-700">{game.minutes === '00:00' ? '--' : game.turnovers}</p>
-          <p className="text-sm text-gray-700">{game.minutes === '00:00' ? '--' : game.steals}</p>
-          <p className="text-sm text-gray-700">{game.minutes === '00:00' ? '--' : game.blocks}</p>
-          <p className="text-sm text-gray-700">{game.minutes === '00:00' ? '--' : `${game.threepointsmade}/${game.threepointsattempted}`}</p>
+          <div className="row text-sm text-gray-700">{formatDate(game.gamedate)}</div>
+          <div className="row text-sm text-gray-700">{game.opposing_team}</div>
+          <div className="row text-sm text-gray-700">{game.minutes === '00:00' ? <b>DNP</b> : game.minutes}</div>
+          <div className="row text-sm text-gray-700">{game.minutes === '00:00' ? '--' : game.points}</div>
+          <div className="row text-sm text-gray-700">{game.minutes === '00:00' ? '--' : game.rebounds}</div>
+          <div className="row text-sm text-gray-700">{game.minutes === '00:00' ? '--' : game.assists}</div>
+          <div className="row text-sm text-gray-700">{game.minutes === '00:00' ? '--' : game.turnovers}</div>
+          <div className="row text-sm text-gray-700">{game.minutes === '00:00' ? '--' : game.steals}</div>
+          <div className="row text-sm text-gray-700">{game.minutes === '00:00' ? '--' : game.blocks}</div>
+          <div className="row text-sm text-gray-700">{game.minutes === '00:00' ? '--' : `${game.threepointsmade}/${game.threepointsattempted}`}</div>
         </div>
       ))}
 
       {/* Show more button */}
       {boxscores.length > 5 && (
         <button
-          className="mt-2 bg-indigo-600 text-white px-4 py-2 rounded-full"
+          className="mt-2 bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-800 justify-self-center max-w-40"
           onClick={() => setShowMore(!showMore)}
         >
           {showMore ? 'Show Less' : 'Show More'}

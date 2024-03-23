@@ -57,4 +57,14 @@ const dailyJob = schedule.scheduleJob("0 2 * * *", async () => {
     await updateDailyBoxscores();
 });
 
+// (async () => {
+//     try {
+//         console.log("Running updateDailyBoxscores manually...");
+//         await updateDailyBoxscores();
+//         console.log("updateDailyBoxscores completed successfully.");
+//     } catch (error) {
+//         console.error("Error running updateDailyBoxscores:", error);
+//     }
+// })();
+
 module.exports = app;

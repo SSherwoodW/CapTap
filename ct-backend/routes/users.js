@@ -12,7 +12,6 @@ const {
 } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 const User = require("../models/user");
-const Post = require("../models/journal");
 const { createToken } = require("../helpers/tokens");
 const userNewSchema = require("../schemas/userNew.json");
 const userUpdateSchema = require("../schemas/userUpdate.json");
@@ -44,7 +43,7 @@ router.post("/", ensureAdmin, async function (req, res, next) {
         }
 
         const user = await User.register(req.body);
-        const token = createToken(user);
+        const token = await createToken(user);
         return res.status(201).json({ user, token });
     } catch (err) {
         return next(err);
@@ -135,156 +134,156 @@ router.delete(
     }
 );
 
-/*********** USER POST ROUTES **************************************/
-// *****************************************************************/
+// /*********** USER POST ROUTES **************************************/
+// // *****************************************************************/
 
-/** GET /[username]/posts {user} => { posts }
- *
- * Requires username.
- *
- * Returns all posts from this user.. { posts: [ {post}, {post}, ... ] }
- *
- * Authorization required: logged in user.
- **/
+// /** GET /[username]/posts {user} => { posts }
+//  *
+//  * Requires username.
+//  *
+//  * Returns all posts from this user.. { posts: [ {post}, {post}, ... ] }
+//  *
+//  * Authorization required: logged in user.
+//  **/
 
-router.get("/:username/posts", ensureLoggedIn, async function (req, res, next) {
-    try {
-        const user = await User.get(req.params.username);
-        const userId = user.id;
+// router.get("/:username/posts", ensureLoggedIn, async function (req, res, next) {
+//     try {
+//         const user = await User.get(req.params.username);
+//         const userId = user.id;
 
-        const posts = await Post.findUserPosts(userId);
-        return res.json({ posts });
-    } catch (err) {
-        return next(err);
-    }
-});
+//         const posts = await Post.findUserPosts(userId);
+//         return res.json({ posts });
+//     } catch (err) {
+//         return next(err);
+//     }
+// });
 
-/** GET /[username]/posts/[postId] {user} => { posts }
- *
- * Requires post id.
- *
- * Returns requested post {post: {user_id, description, created_at}}
- *
- * Authorization required: logged in user.
- **/
+// /** GET /[username]/posts/[postId] {user} => { posts }
+//  *
+//  * Requires post id.
+//  *
+//  * Returns requested post {post: {user_id, description, created_at}}
+//  *
+//  * Authorization required: logged in user.
+//  **/
 
-router.get(
-    "/:username/posts/:postId",
-    ensureLoggedIn,
-    async function (req, res, next) {
-        try {
-            const post = await Post.find(req.params.postId);
-            return res.json({ post });
-        } catch (err) {
-            return next(err);
-        }
-    }
-);
+// router.get(
+//     "/:username/posts/:postId",
+//     ensureLoggedIn,
+//     async function (req, res, next) {
+//         try {
+//             const post = await Post.find(req.params.postId);
+//             return res.json({ post });
+//         } catch (err) {
+//             return next(err);
+//         }
+//     }
+// );
 
-/*********** USER FOLLOW ROUTES **************************************/
-// *****************************************************************/
+// /*********** USER FOLLOW ROUTES **************************************/
+// // *****************************************************************/
 
-/** GET /[username]/followers {userId} => {followers: [ follower, follower, ... ]}
- *
- * Requires username, retrieved from url params.
- *
- * Returns all followers -- {followers: [] }
- *
- * Authorization required: logged in user.
- *
- */
+// /** GET /[username]/followers {userId} => {followers: [ follower, follower, ... ]}
+//  *
+//  * Requires username, retrieved from url params.
+//  *
+//  * Returns all followers -- {followers: [] }
+//  *
+//  * Authorization required: logged in user.
+//  *
+//  */
 
-router.get(
-    "/:username/followers",
-    ensureLoggedIn,
-    async function (req, res, next) {
-        try {
-            const user = await User.get(req.params.username);
-            const userId = user.id;
+// router.get(
+//     "/:username/followers",
+//     ensureLoggedIn,
+//     async function (req, res, next) {
+//         try {
+//             const user = await User.get(req.params.username);
+//             const userId = user.id;
 
-            const followers = await User.followers(userId);
-            return res.json({ followers });
-        } catch (err) {
-            return next(err);
-        }
-    }
-);
+//             const followers = await User.followers(userId);
+//             return res.json({ followers });
+//         } catch (err) {
+//             return next(err);
+//         }
+//     }
+// );
 
-/** GET /[username]/following {userId} => {following: [ user, user, ... ]}
- *
- * Requires username, retrieved from url params.
- *
- * Returns all users USER is following -- {following: [] }
- *
- * Authorization required: logged in user.
- *
- */
-router.get(
-    "/:username/following",
-    ensureLoggedIn,
-    async function (req, res, next) {
-        try {
-            const user = await User.get(req.params.username);
-            const userId = user.id;
+// /** GET /[username]/following {userId} => {following: [ user, user, ... ]}
+//  *
+//  * Requires username, retrieved from url params.
+//  *
+//  * Returns all users USER is following -- {following: [] }
+//  *
+//  * Authorization required: logged in user.
+//  *
+//  */
+// router.get(
+//     "/:username/following",
+//     ensureLoggedIn,
+//     async function (req, res, next) {
+//         try {
+//             const user = await User.get(req.params.username);
+//             const userId = user.id;
 
-            const following = await User.following(userId);
-            return res.json({ following });
-        } catch (err) {
-            return next(err);
-        }
-    }
-);
+//             const following = await User.following(userId);
+//             return res.json({ following });
+//         } catch (err) {
+//             return next(err);
+//         }
+//     }
+// );
 
-/** POST /[username]/follow {username, following_username} => {message: "Followed successfully"}
- *
- * Requires user-being-followed-username from params and user-following-id from body.
- *
- * Returns message: "Followed successfully."
- *
- * Authorization required: logged in user.
- *
- */
+// /** POST /[username]/follow {username, following_username} => {message: "Followed successfully"}
+//  *
+//  * Requires user-being-followed-username from params and user-following-id from body.
+//  *
+//  * Returns message: "Followed successfully."
+//  *
+//  * Authorization required: logged in user.
+//  *
+//  */
 
-router.post(
-    "/:username/follow",
-    ensureLoggedIn,
-    async function (req, res, next) {
-        try {
-            const following_user = req.body.username;
-            const followed_user = req.params.username;
+// router.post(
+//     "/:username/follow",
+//     ensureLoggedIn,
+//     async function (req, res, next) {
+//         try {
+//             const following_user = req.body.username;
+//             const followed_user = req.params.username;
 
-            const follow = await User.follow(following_user, followed_user);
-            return res.json({ follow });
-        } catch (err) {
-            return next(err);
-        }
-    }
-);
+//             const follow = await User.follow(following_user, followed_user);
+//             return res.json({ follow });
+//         } catch (err) {
+//             return next(err);
+//         }
+//     }
+// );
 
-/** POST /[username]/unfollow {username, following_username} => {message: "Unfollowed user: username"}
- *
- * Requires user-being-followed-username from params and user-following-id from body.
- *
- * Returns message: "Unfollowed user: username."
- *
- * Authorization required: logged in user.
- *
- */
+// /** POST /[username]/unfollow {username, following_username} => {message: "Unfollowed user: username"}
+//  *
+//  * Requires user-being-followed-username from params and user-following-id from body.
+//  *
+//  * Returns message: "Unfollowed user: username."
+//  *
+//  * Authorization required: logged in user.
+//  *
+//  */
 
-router.delete(
-    "/:username/unfollow",
-    ensureLoggedIn,
-    async function (req, res, next) {
-        try {
-            const following_user = req.body.username;
-            const followed_user = req.params.username;
+// router.delete(
+//     "/:username/unfollow",
+//     ensureLoggedIn,
+//     async function (req, res, next) {
+//         try {
+//             const following_user = req.body.username;
+//             const followed_user = req.params.username;
 
-            const unfollow = await User.unfollow(following_user, followed_user);
-            return res.json({ unfollow });
-        } catch (err) {
-            return next(err);
-        }
-    }
-);
+//             const unfollow = await User.unfollow(following_user, followed_user);
+//             return res.json({ unfollow });
+//         } catch (err) {
+//             return next(err);
+//         }
+//     }
+// );
 
 module.exports = router;

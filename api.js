@@ -14,7 +14,6 @@ const BASE_URL = "http://localhost:3001";
 class CapTapApi {
     // the token for interactive with the API will be stored here.
     static token;
-    // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNjb3R0eWhvdHR5IiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzAzMTk2OTg2fQ.wawT2wJ5Wmujle--Ur2L-30HdqUjIwtpxJ1Yg6QLdv0";
 
     static async request(endpoint, data = {}, method = "get") {
         console.debug("API Call:", endpoint, data, method);
@@ -90,7 +89,6 @@ class CapTapApi {
 
     static async getPlayers(full_name) {
         let res = await this.request("players", { full_name });
-        console.log(res);
         return res.players;
     }
 
@@ -116,6 +114,32 @@ class CapTapApi {
         let res = await this.request(`journal/${username}`);
         console.log("CTAPI getJournalEntries", res);
         return res.entries;
+    }
+
+    /** Get a specific journal entry */
+    static async getJournalEntry(username, journalId) {
+        let res = await this.request(`journal/${username}/${journalId}`);
+        console.log("getJournalEntry", res);
+        return res.entry;
+    }
+
+    /** Update a journal entry description */
+    static async updateJournalEntry(journalId, username, description) {
+        let res = await this.request(
+            `journal/${username}/${journalId}`,
+            description,
+            "patch"
+        );
+        return res.entry;
+    }
+
+    static async deleteJournalEntry(journalId, username) {
+        let res = await this.request(
+            `journal/${username}/${journalId}`,
+            journalId,
+            "delete"
+        );
+        return res.entry;
     }
 }
 

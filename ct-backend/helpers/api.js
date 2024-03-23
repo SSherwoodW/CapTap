@@ -1,5 +1,5 @@
 const axios = require("axios");
-const API_KEY = require("../secret");
+const API_KEY = require("../secret/secret");
 
 const { BadRequestError } = require("../expressError");
 
@@ -12,8 +12,9 @@ const { BadRequestError } = require("../expressError");
 function parseTeamData(data) {
     const teamsData = [];
 
-    if (data && data.data && data.data.conferences) {
-        data.data.conferences.forEach((conference) => {
+    // not working for tests: if (data && data.data && data.data.conferences)
+    if (data && data.conferences) {
+        data.conferences.forEach((conference) => {
             conference.divisions.forEach((division) => {
                 if (division.teams) {
                     division.teams.forEach((team) => {
@@ -53,8 +54,6 @@ function parsePlayerData(dataArray) {
         dataArray.forEach((data) => {
             if (data && data.players) {
                 const teamId = data.id;
-                console.log(teamId);
-
                 data.players.forEach((player) => {
                     if (
                         player.id &&
@@ -76,7 +75,7 @@ function parsePlayerData(dataArray) {
     } else {
         throw new BadRequestError("No player data");
     }
-    // console.log("Inside parsePlayerData:", Array.isArray(playersData));
+
     return playersData;
 }
 
@@ -94,8 +93,12 @@ function parsePlayerData(dataArray) {
 function parseGameData(data) {
     const gamesData = [];
 
-    if (data && data.data && data.data.games) {
-        data.data.games.forEach((game) => {
+    // not working for test: (data && data.data && data.data.games && data.data.games.length > 0)
+
+    if (data && data.games && data.games.length > 0) {
+        console.log("parseGameData", data.games[0].home);
+        // also changed for test: data.data.games.forEach((game) => {
+        data.games.forEach((game) => {
             if (
                 game.id &&
                 game.scheduled &&
@@ -110,11 +113,14 @@ function parseGameData(data) {
                     homeTeamId: game.home.id,
                     awayTeamId: game.away.id,
                 });
+            } else {
+                throw new BadRequestError("Error fetching game data");
             }
         });
     } else {
         throw new BadRequestError("No game data");
     }
+    console.log(gamesData);
     return gamesData;
 }
 
@@ -140,6 +146,7 @@ function parseBoxScoreData(gameId, data) {
         );
     }
 }
+
 /**
  *
  * @param {*} teamId is a team's api_id from the DB.

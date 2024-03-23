@@ -29,7 +29,6 @@ class User {
                   first_name AS "firstName",
                   last_name AS "lastName",
                   email,
-                  birthdate,
                   is_admin AS "isAdmin"
            FROM users
            WHERE username = $1`,
@@ -89,7 +88,7 @@ class User {
             birthdate,
             is_admin)
            VALUES ($1, $2, $3, $4, $5, $6, $7)
-           RETURNING username, first_name AS "firstName", last_name AS "lastName", email, birthdate, is_admin AS "isAdmin"`,
+           RETURNING username, first_name AS "firstName", last_name AS "lastName", email, is_admin AS "isAdmin"`,
             [
                 username,
                 hashedPassword,
@@ -117,7 +116,6 @@ class User {
                   first_name AS "firstName",
                   last_name AS "lastName",
                   email,
-                  birthdate,
                   is_admin AS "isAdmin"
            FROM users
            ORDER BY username`
@@ -141,7 +139,6 @@ class User {
                   first_name AS "firstName",
                   last_name AS "lastName",
                   email,
-                  birthdate,
                   is_admin AS "isAdmin"
            FROM users
            WHERE username = $1`,
@@ -193,7 +190,6 @@ class User {
                       RETURNING username,
                                 first_name AS "firstName",
                                 last_name AS "lastName",
-                                birthdate,
                                 email,
                                 is_admin AS "isAdmin"`;
         const result = await db.query(querySql, [...values, username]);
@@ -220,122 +216,122 @@ class User {
         if (!user) throw new NotFoundError(`No user: ${username}`);
     }
 
-    /** Get a list of all users following a user.
-     *
-     * Data returned is a list of all a user's followers by username.
-     *
-     */
+    // /** Get a list of all users following a user.
+    //  *
+    //  * Data returned is a list of all a user's followers by username.
+    //  *
+    //  */
 
-    static async followers(userId) {
-        let result = await db.query(
-            `SELECT u.username
-            FROM users u
-            JOIN follows f
-            ON f.follower_id = u.id
-            WHERE f.followed_user_id = $1`,
-            [userId]
-        );
+    // static async followers(userId) {
+    //     let result = await db.query(
+    //         `SELECT u.username
+    //         FROM users u
+    //         JOIN follows f
+    //         ON f.follower_id = u.id
+    //         WHERE f.followed_user_id = $1`,
+    //         [userId]
+    //     );
 
-        return result.rows;
-    }
+    //     return result.rows;
+    // }
 
-    /** Get a list of all users following a user.
-     *
-     * Data returned is a list of all a user's followers by username.
-     *
-     */
+    // /** Get a list of all users following a user.
+    //  *
+    //  * Data returned is a list of all a user's followers by username.
+    //  *
+    //  */
 
-    static async following(userId) {
-        let result = await db.query(
-            `SELECT u.username
-            FROM users u
-            JOIN follows f
-            ON f.followed_user_id = u.id
-            WHERE f.follower_id = $1`,
-            [userId]
-        );
+    // static async following(userId) {
+    //     let result = await db.query(
+    //         `SELECT u.username
+    //         FROM users u
+    //         JOIN follows f
+    //         ON f.followed_user_id = u.id
+    //         WHERE f.follower_id = $1`,
+    //         [userId]
+    //     );
 
-        return result.rows;
-    }
+    //     return result.rows;
+    // }
 
-    static async follow(following_user, followed_user) {
-        try {
-            // Check if the users exist and get their IDs
-            const followingUser = await db.query(
-                `SELECT id FROM users WHERE username = $1`,
-                [following_user]
-            );
+    // static async follow(following_user, followed_user) {
+    //     try {
+    //         // Check if the users exist and get their IDs
+    //         const followingUser = await db.query(
+    //             `SELECT id FROM users WHERE username = $1`,
+    //             [following_user]
+    //         );
 
-            const followedUser = await db.query(
-                `SELECT id FROM users WHERE username = $1`,
-                [followed_user]
-            );
+    //         const followedUser = await db.query(
+    //             `SELECT id FROM users WHERE username = $1`,
+    //             [followed_user]
+    //         );
 
-            // Check if both users exist
-            if (
-                followingUser.rows.length === 0 ||
-                followedUser.rows.length === 0
-            ) {
-                throw new Error("User does not exist");
-            }
+    //         // Check if both users exist
+    //         if (
+    //             followingUser.rows.length === 0 ||
+    //             followedUser.rows.length === 0
+    //         ) {
+    //             throw new Error("User does not exist");
+    //         }
 
-            // Check if the relationship already exists
-            const existingRelationship = await db.query(
-                `SELECT COUNT(*) FROM follows
-            WHERE follower_id = $1 AND followed_user_id = $2`,
-                [followingUser.rows[0].id, followedUser.rows[0].id]
-            );
+    //         // Check if the relationship already exists
+    //         const existingRelationship = await db.query(
+    //             `SELECT COUNT(*) FROM follows
+    //         WHERE follower_id = $1 AND followed_user_id = $2`,
+    //             [followingUser.rows[0].id, followedUser.rows[0].id]
+    //         );
 
-            const relationshipExists =
-                parseInt(existingRelationship.rows[0].count) > 0;
+    //         const relationshipExists =
+    //             parseInt(existingRelationship.rows[0].count) > 0;
 
-            if (relationshipExists) {
-                throw new Error(`Already following user: ${followed_user}`);
-            } else {
-                // Insert the follow relationship
-                await db.query(
-                    `INSERT INTO follows (follower_id, followed_user_id)
-                VALUES ($1, $2)`,
-                    [followingUser.rows[0].id, followedUser.rows[0].id]
-                );
-            }
+    //         if (relationshipExists) {
+    //             throw new Error(`Already following user: ${followed_user}`);
+    //         } else {
+    //             // Insert the follow relationship
+    //             await db.query(
+    //                 `INSERT INTO follows (follower_id, followed_user_id)
+    //             VALUES ($1, $2)`,
+    //                 [followingUser.rows[0].id, followedUser.rows[0].id]
+    //             );
+    //         }
 
-            // Retrieve users following the followed_user
-            let result = await db.query(
-                `SELECT u.username
-            FROM users u
-            JOIN follows f ON f.follower_id = u.id
-            WHERE f.followed_user_id = $1`,
-                [followedUser.rows[0].id]
-            );
-            return result.rows;
-        } catch (err) {
-            // Handle errors
-            throw new Error(`Failed to follow user: ${err.message}`);
-        }
-    }
+    //         // Retrieve users following the followed_user
+    //         let result = await db.query(
+    //             `SELECT u.username
+    //         FROM users u
+    //         JOIN follows f ON f.follower_id = u.id
+    //         WHERE f.followed_user_id = $1`,
+    //             [followedUser.rows[0].id]
+    //         );
+    //         return result.rows;
+    //     } catch (err) {
+    //         // Handle errors
+    //         throw new Error(`Failed to follow user: ${err.message}`);
+    //     }
+    // }
 
-    static async unfollow(following_user, followed_user) {
-        // Check if the users exist and get their IDs
-        const followingUser = await db.query(
-            `SELECT id FROM users WHERE username = $1`,
-            [following_user]
-        );
+    // static async unfollow(following_user, followed_user) {
+    //     // Check if the users exist and get their IDs
+    //     const followingUser = await db.query(
+    //         `SELECT id FROM users WHERE username = $1`,
+    //         [following_user]
+    //     );
 
-        const followedUser = await db.query(
-            `SELECT id FROM users WHERE username = $1`,
-            [followed_user]
-        );
+    //     const followedUser = await db.query(
+    //         `SELECT id FROM users WHERE username = $1`,
+    //         [followed_user]
+    //     );
 
-        await db.query(
-            `DELETE FROM follows
-            WHERE follower_id = $1
-            AND followed_user_id = $2`,
-            [followingUser.rows[0].id, followedUser.rows[0].id]
-        );
+    //     await db.query(
+    //         `DELETE FROM follows
+    //         WHERE follower_id = $1
+    //         AND followed_user_id = $2`,
+    //         [followingUser.rows[0].id, followedUser.rows[0].id]
+    //     );
 
-        return "Unfollowed user:", followed_user;
-    }
+    //     return "Unfollowed user:", followed_user;
+    // }
 }
 
 module.exports = User;

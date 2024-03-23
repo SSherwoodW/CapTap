@@ -1,20 +1,23 @@
 const axios = require("axios");
 const db = require("../db");
 
-const Game = require("../models/game");
 const Boxscore = require("../models/boxscore");
 
 const { parseBoxScoreData } = require("./api");
 
-const API_KEY = require("../secret");
+const API_KEY = require("../secret/secret");
+
+const phxId = "583ecfa8-fb46-11e1-82cb-f4ce4684ea4c";
+
+/**
+ *
+ * @returns error message or successful dbInsertion message.
+ */
 
 const updateDailyBoxscores = async () => {
     try {
-        const phxId = "583ecfa8-fb46-11e1-82cb-f4ce4684ea4c";
-
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        console.log("yesterday:", yesterday);
 
         const yesterdayGames = await db.query(
             `SELECT api_id FROM games
@@ -22,13 +25,12 @@ const updateDailyBoxscores = async () => {
             AND (team_1_id = $2 OR team_2_id = $2)`,
             [yesterday, phxId]
         );
+        console.log("yesterday", yesterday);
 
         if (yesterdayGames.rows < 1) {
             console.log("no games played yesterday");
             return "no games played yesterday";
         }
-
-        console.log("yesterdayGames:", yesterdayGames.rows);
 
         const gameIds = yesterdayGames.rows.map((game) => game.api_id);
         const boxScorePromises = gameIds.map((gameId) =>
@@ -63,7 +65,7 @@ const updateDailyBoxscores = async () => {
 
         return dbInsertion;
     } catch (err) {
-        console.error(err);
+        console.error("error adding boxscores; error:", err);
         throw err;
     }
 };

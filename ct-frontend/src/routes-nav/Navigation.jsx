@@ -8,11 +8,6 @@ import LoggedInNav from "./LoggedInNav";
 import LoggedOutNav from "./LoggedOutNav";
 
 
-
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
-
 /** Navigation bar for site. Shows up on every page.
  *
  * When user is logged in, shows links to main areas of site. When not,
@@ -27,7 +22,6 @@ function Navigation() {
     const location = useLocation();
     const [currentLink, setCurrentLink] = useState(getCurrentLink(location.pathname));
 
-    console.log('navigation mount');
     useEffect(() => {
         // Update currentLink when the location changes
         setCurrentLink(getCurrentLink(location.pathname));

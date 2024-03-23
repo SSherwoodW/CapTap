@@ -1,10 +1,3 @@
-CREATE TABLE teams (
-  id SERIAL PRIMARY KEY,
-  api_id varchar(50) UNIQUE NOT NULL,
-  name TEXT NOT NULL,
-  code varchar(3)
-);
-
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   username TEXT NOT NULL,
@@ -17,29 +10,11 @@ CREATE TABLE users (
   is_admin BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE follows (
-  follower_id INTEGER NOT NULL,
-  followed_user_id INTEGER NOT NULL,
-  PRIMARY KEY (follower_id, followed_user_id),
-  FOREIGN KEY (follower_id) REFERENCES users(id) ON DELETE CASCADE,
-  FOREIGN KEY (followed_user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
-CREATE TABLE games (
+CREATE TABLE teams (
   id SERIAL PRIMARY KEY,
-  team_1_id varchar(50) NOT NULL
-    REFERENCES teams(api_id) ON DELETE CASCADE,
-  team_2_id varchar(50) NOT NULL
-    REFERENCES teams(api_id) ON DELETE CASCADE,
-  game_date date NOT NULL
-);
-
-CREATE TABLE posts (
-  id SERIAL PRIMARY KEY,
-  user_id integer NOT NULL
-    REFERENCES users ON DELETE CASCADE,
-  description varchar(255) NOT NULL,
-  created_at timestamp WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+  api_id varchar(50) UNIQUE NOT NULL,
+  name TEXT NOT NULL,
+  code varchar(3)
 );
 
 CREATE TABLE players (
@@ -53,19 +28,31 @@ CREATE TABLE players (
     REFERENCES teams(api_id) ON DELETE CASCADE
 );
 
-CREATE TABLE player_stats (
+CREATE TABLE journals (
   id SERIAL PRIMARY KEY,
-  post_id integer NOT NULL
-    REFERENCES posts(id) ON DELETE CASCADE,
-  player_id integer NOT NULL
-    REFERENCES players ON DELETE CASCADE,
-  statistic_type varchar(50) NOT NULL,
-  values integer[] NOT NULL,
-  values_length INTEGER NOT NULL,
-  first_game_date DATE NOT NULL,
-  UNIQUE (player_id, first_game_date)
-  -- count of values here
-  -- IF values is 5, check date of the first game. IF that exists, this is a duplicate--use this row. 
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  description TEXT,
+  range varcher(10) NOT NULL,
+  created_at timestamp WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE journal_players (
+    journal_id INTEGER REFERENCES journals(id) NOT NULL,
+    player_id INTEGER REFERENCES players(id) NOT NULL,
+    stat_category text NOT NULL,
+    over_under varchar(10) NOT NULL,
+    value SMALLINT NOT NULL,
+    PRIMARY KEY(journal_id, player_id)
+);
+
+CREATE TABLE games (
+  id SERIAL PRIMARY KEY,
+  api_id varchar(50) UNIQUE NOT NULL,
+  team_1_id varchar(50) NOT NULL
+    REFERENCES teams(api_id) ON DELETE CASCADE,
+  team_2_id varchar(50) NOT NULL
+    REFERENCES teams(api_id) ON DELETE CASCADE,
+  game_date timestamp with time zone NOT NULL
 );
 
 CREATE TABLE boxscores (
@@ -83,7 +70,7 @@ CREATE TABLE boxscores (
   turnovers integer NOT NULL,
   three_points_made integer NOT NULL,
   three_points_attempted integer NOT NULL
-)
+);
 
 
 
@@ -98,3 +85,27 @@ CREATE TABLE boxscores (
 -- ALTER TABLE games ADD FOREIGN KEY (team_1_id) REFERENCES teams (id);
 
 -- ALTER TABLE games ADD FOREIGN KEY (team_2_id) REFERENCES teams (id);
+
+
+-- CREATE TABLE posts (
+--   id SERIAL PRIMARY KEY,
+--   user_id integer NOT NULL
+--     REFERENCES users(id) ON DELETE CASCADE,
+--   description varchar(255) NOT NULL,
+--   created_at timestamp WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+-- );
+
+-- CREATE TABLE player_stats (
+--   id SERIAL PRIMARY KEY,
+--   post_id integer NOT NULL
+--     REFERENCES posts(id) ON DELETE CASCADE,
+--   player_id integer NOT NULL
+--     REFERENCES players ON DELETE CASCADE,
+--   statistic_type varchar(50) NOT NULL,
+--   values integer[] NOT NULL,
+--   values_length INTEGER NOT NULL,
+--   first_game_date DATE NOT NULL,
+--   UNIQUE (player_id, first_game_date)
+--   -- count of values here
+--   -- IF values is 5, check date of the first game. IF that exists, this is a duplicate--use this row. 
+-- );

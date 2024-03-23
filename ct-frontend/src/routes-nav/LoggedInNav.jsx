@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 import { useAuth } from "../auth/authContext";
-import PlayersSearch from "../players/PlayersSearch";
+import NavBarSearch from "../players/PlayersSearch";
 
 
 function classNames(...classes) {
@@ -13,18 +13,32 @@ function classNames(...classes) {
 function LoggedInNav({ loggedInNavigation, handleLinkClick }) {
     const { handleLogout } = useAuth();
     const [showPlayersSearch, setShowPlayersSearch] = useState(false);
+    const [showTeamsSearch, setShowTeamsSearch] = useState(false);
 
     const handleButtonClick = (name) => {
-        if (name === 'Search Players') {
-            setShowPlayersSearch(true);
-            console.log('clicked')
+        if (name === `Search Players`) {
+            if (showPlayersSearch) {
+                setShowPlayersSearch(false);
+            } else {
+                setShowPlayersSearch(true);
+            };
+            setShowTeamsSearch(false);
+        } else if (name === `Search Teams`) {
+            if (showTeamsSearch) {
+                setShowTeamsSearch(false);
+            } else {
+                setShowTeamsSearch(true)
+            };
+            setShowPlayersSearch(false);
         } else {
             setShowPlayersSearch(false);
+            setShowTeamsSearch(false);
         }
     };
 
-    const handlePlayerClick = () => {
+    const handleSearchClick = () => {
         setShowPlayersSearch(false);
+        setShowTeamsSearch(false);
     }
 
     return (
@@ -53,32 +67,51 @@ function LoggedInNav({ loggedInNavigation, handleLinkClick }) {
                                         alt="CapTap Logo"
                                     />
                                 </div>
-                                <div className="hidden sm:ml-6 sm:block">
-                                    <div className="flex space-x-4">
+                                <div className="hidden sm:ml-6 sm:flex">
+                                    <div className="flex items-center justify-center sm:items-stretch sm:justify-start">
                                         {loggedInNavigation.map((item) => (
                                             <Fragment key={item.name}>
-                                                {item.name === 'Search Teams' || item.name === 'Search Players' ? (
-                                                    <div className="">
+                                                {item.name === 'Search Teams' ? (
+                                                    <div>
                                                         <button
                                                             onClick={() => handleButtonClick(item.name)}
                                                             className={classNames(
-                                                                item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                                'rounded-md px-3 py-2 text-sm font-medium'
+                                                                showTeamsSearch ?
+                                                                    'bg-indigo-300 bg-opacity-75 text-white'
+                                                                : showPlayersSearch ?
+                                                                        'hidden' 
+                                                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                                    'rounded-md px-3 py-2 text-sm font-medium'
                                                             )}
                                                             aria-current={item.current ? 'page' : undefined}
                                                         >
                                                             {item.name}
-                                                        </button>
-                                                        {showPlayersSearch && (
-                                                            <div className="">
-                                                                <PlayersSearch handlePlayerClick={handlePlayerClick} />
-                                                            </div>
-                                                        )}        
+                                                        </button>       
+                                                    </div>
+                                                ) : item.name === 'Search Players' ? (
+                                                    <div>
+                                                        <button
+                                                            onClick={() => handleButtonClick(item.name)}
+                                                            className={classNames(
+                                                                showPlayersSearch ?
+                                                                    'bg-indigo-300 bg-opacity-75 text-white'
+                                                                : showTeamsSearch ?
+                                                                        'hidden' 
+                                                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                                    'rounded-md px-3 py-2 text-sm font-medium'
+                                                            )}
+                                                            aria-current={item.current ? 'page' : undefined}
+                                                        >
+                                                            {item.name}
+                                                        </button>     
                                                     </div>
                                                 ) : (
                                                     <a
                                                         href={item.href}
-                                                        onClick={() => handleLinkClick(item.name)}
+                                                        onClick={() => {
+                                                            handleButtonClick(item.name)
+                                                            handleLinkClick(item.name)
+                                                        }}
                                                         className={classNames(
                                                             item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                                             'rounded-md px-3 py-2 text-sm font-medium'
@@ -90,6 +123,22 @@ function LoggedInNav({ loggedInNavigation, handleLinkClick }) {
                                                 )}
                                             </Fragment>
                                         ))}
+                                        {showPlayersSearch && (
+                                            <div className="px-2" data-testid="players-search">
+                                                <NavBarSearch
+                                                    searchType="players"
+                                                    handleSearchClick={handleSearchClick}
+                                                />
+                                            </div>
+                                        )}
+                                        {showTeamsSearch && (
+                                            <div className="px-2" data-testid="teams-search">
+                                                <NavBarSearch
+                                                    searchType="teams"
+                                                    handleSearchClick={handleSearchClick}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -97,9 +146,9 @@ function LoggedInNav({ loggedInNavigation, handleLinkClick }) {
                                 {/* Profile dropdown */}
                                 <Menu as="div" className="relative ml-3">
                                     <div>
-                                        <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                        <Menu.Button data-testid="user-menu" as="button" className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                         <span className="absolute -inset-1.5" />
-                                        <span className="sr-only">Open user menu</span>
+                                        <span className="sr-only" alt="Open user menu">Open user menu</span>
                                         <img
                                             className="h-8 w-8 rounded-full"
                                             src=""

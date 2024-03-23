@@ -1,0 +1,49 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PlayerSidebar component > should match the snapshot 1`] = `
+<div>
+  <div
+    class="Sidebar bg-slate-600 border-2 border-gray-500 rounded-sm my-4 mx-4 p-6 w-64"
+  >
+    <h3
+      class="text-xl text-center py-2 mb-4 uppercase text-gray-300 bg-indigo-500 border-2 border-gray-500 rounded-sm"
+    >
+      Parlayer
+    </h3>
+    <h6
+      class="mb-2 m-4 text-sm font-thin text-gray-200"
+    >
+      Select a teammate
+    </h6>
+    <ul>
+      <a
+        href="/parlayer/team-code"
+      >
+        <li
+          class="py-1 px-0 text-gray-200 hover:bg-gray-800 rounded transition duration-300"
+        >
+          Player 1
+        </li>
+      </a>
+      <a
+        href="/parlayer/team-code"
+      >
+        <li
+          class="py-1 px-0 text-gray-200 hover:bg-gray-800 rounded transition duration-300"
+        >
+          Player 2
+        </li>
+      </a>
+      <a
+        href="/parlayer/team-code"
+      >
+        <li
+          class="py-1 px-0 text-gray-200 hover:bg-gray-800 rounded transition duration-300"
+        >
+          Player 3
+        </li>
+      </a>
+    </ul>
+  </div>
+</div>
+`;

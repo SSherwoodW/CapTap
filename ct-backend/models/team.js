@@ -1,10 +1,6 @@
 const db = require("../db");
 
-const {
-    NotFoundError,
-    BadRequestError,
-    UnauthorizedError,
-} = require("../expressError");
+const { NotFoundError, BadRequestError } = require("../expressError");
 
 /* Related functions for teams. */
 
@@ -88,9 +84,13 @@ class Team {
             }
 
             const result = await db.query(query, values);
+
+            if (result.rows.length === 0) {
+                throw new NotFoundError("No team found matching that criteria");
+            }
             return result.rows[0];
         } catch (err) {
-            return { success: false, message: err.message };
+            throw new NotFoundError("no team found matching that criteria");
         }
     }
 
@@ -102,10 +102,10 @@ class Team {
             [apiId]
         );
 
-        const roster = result.rows;
-
-        if (!roster)
+        if (result.rows.length === 0)
             throw new NotFoundError("Unable to find players for team:", apiId);
+
+        const roster = result.rows;
 
         return roster;
     }

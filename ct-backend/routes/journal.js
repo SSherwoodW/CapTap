@@ -19,10 +19,12 @@ const journalUpdateSchema = require("../schemas/journalUpdate.json");
 
 const router = express.Router();
 
-/** POST / { data: {
+/** POST / {
+ *      description: "test description",
+ *      range: "L5",
+ *      data: {
  *      playerIds: [1,2],
  *      overUnders: [ [1, "Over"], [2, "Under"] ],
- *      range: "L5",
  *      statCats: [ [1, "Points"], [2, "Rebounds"] ],
  *      values: [ [1, 25], [2, 10] ]},
  *      userId: 999
@@ -138,28 +140,32 @@ router.get(
     }
 );
 
-/** GET / { userId }  => { entry: [ { id, userId} ] }
+/** GET / { username, journalId }  => { entry: [ { id, userId} ] }
  *
  * Gets specific journal entry from specific user.
  *
- * This returns all posts { entries: [ { entry }, { entry },{ entry } ] }
+ * This returns a single journal entry
  *
- * Authorization required: Admin.
+ * Authorization required: Correct user or admin.
  **/
 
-router.get("/:userId/:journalId", ensureAdmin, async function (req, res, next) {
-    try {
-        const entry = await Journal.find(req.params.journalId);
-        return res.json({ entry: entry });
-    } catch (err) {
-        return next(err);
+router.get(
+    "/:username/:journalId",
+    ensureCorrectUserOrAdmin,
+    async function (req, res, next) {
+        try {
+            const entry = await Journal.find(req.params.journalId);
+            return res.json({ entry: entry });
+        } catch (err) {
+            return next(err);
+        }
     }
-});
+);
 
 /** UPDATE */
 
 router.patch(
-    "/:journalId/:userId",
+    "/:userId/:journalId",
     ensureCorrectUserOrAdmin,
     async function (req, res, next) {
         try {
@@ -172,12 +178,28 @@ router.patch(
                 throw new BadRequestError(errs);
             }
             const description = req.body.description;
-            console.log(req.params.postId);
+            console.log(req.body.description);
 
-            const entry = await Journal.update(description, req.params.postId);
+            const entry = await Journal.update(
+                req.params.journalId,
+                description
+            );
 
             console.log(entry);
             return res.json({ entry });
+        } catch (err) {
+            return next(err);
+        }
+    }
+);
+
+router.delete(
+    "/:username/:journalId",
+    ensureCorrectUserOrAdmin,
+    async function (req, res, next) {
+        try {
+            const deletion = await Journal.delete(req.params.journalId);
+            return res.json({ deletion });
         } catch (err) {
             return next(err);
         }

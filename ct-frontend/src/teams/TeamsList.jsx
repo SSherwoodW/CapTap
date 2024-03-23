@@ -20,10 +20,8 @@ function TeamsList() {
     const [teams, setTeams] = useState(null);
 
     useEffect(function getAllTeamsOnMount() {
-        if (CapTapApi.token) {
-          console.debug("TeamsList useEffect getAllTeamssOnMount");
+        console.debug("TeamsList useEffect getAllTeamssOnMount");
         search();
-        }
     }, []);
 
     /** Triggered by search form submit; reloads teams. */
@@ -40,7 +38,7 @@ function TeamsList() {
             <Search searchFor={search} />
             {teams.length
                 ? (
-                    <div className="TeamsList-list">
+                    <div className="TeamsList-list" data-testid="teams-list">
                 {teams.map(t => (
                     <TeamCard
                         name={t.name}

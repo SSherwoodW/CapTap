@@ -1,16 +1,16 @@
 "use strict";
 
 const db = require("../db");
-const {
-    NotFoundError,
-    BadRequestError,
-    UnauthorizedError,
-} = require("../expressError");
+const { BadRequestError, NotFoundError } = require("../expressError");
 
 class Boxscore {
     /** Add boxscores to database
      *
+     * Requires array of player boxscores objects [{boxscore}, {boxscore}]
      *
+     * Returns {success: true, message: "Boxscores added successfully."}
+     *
+     * Throws BadRequestError if unable to add boxscores.
      */
 
     static async addAll(boxScoreData) {
@@ -42,19 +42,30 @@ class Boxscore {
 
             return { success: true, message: "Boxscores added successfully." };
         } catch (err) {
-            throw new BadRequestError("Unable to add boxscores");
+            throw new BadRequestError("Unable to add boxscores", err);
         }
     }
 
     /** Find boxscores for player(s)
-     *  booker api id : 31baa84f-c759-4f92-8e1f-a92305ade3d6
-     * booker team_id : 583ecfa8-fb46-11e1-82cb-f4ce4684ea4c
+     *
+     * Requires player api_id
+     *
+     * Returns array of boxscores
      *
      */
 
     static async find(playerId) {
-        const result = await db.query(
-            `SELECT 
+        try {
+            console.log(playerId);
+            const playerExists = await db.query(
+                `SELECT * FROM players
+                WHERE api_id = $1`,
+                [playerId]
+            );
+            if (playerExists.rows.length === 0)
+                throw new BadRequestError("no player with id", playerId);
+            const result = await db.query(
+                `SELECT 
             b.minutes, 
             b.points, 
             b.rebounds, 
@@ -78,16 +89,14 @@ class Boxscore {
             AND player_id = $1
             AND g.game_date < CURRENT_DATE
             ORDER BY g.game_date DESC`,
-            [playerId]
-        );
+                [playerId]
+            );
 
-        return result.rows;
+            return result.rows;
+        } catch (err) {
+            throw new NotFoundError("no boxscores found for player", playerId);
+        }
     }
-
-    /** Get statlogs for players
-     *
-     *
-     */
 }
 
 module.exports = Boxscore;

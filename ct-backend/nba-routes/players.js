@@ -1,10 +1,6 @@
 const axios = require("axios");
 const express = require("express");
-const {
-    ensureCorrectUserOrAdmin,
-    ensureAdmin,
-    ensureLoggedIn,
-} = require("../middleware/auth");
+const { ensureAdmin, ensureLoggedIn } = require("../middleware/auth");
 const {
     parsePlayerData,
     getPlayerData,
@@ -170,13 +166,6 @@ router.get("/:id", ensureLoggedIn, async function (req, res, next) {
         const playerId = player.apiid;
         console.log(playerId);
 
-        // looking for those boxscores...
-        /**
-         * RATED LIMITED -- when I have full access, I will check the DB for boxscores,
-         * then call the API to get data
-         * then add new boxscore data to DB
-         * with Boxscore.addAll()
-         */
         const boxscores = await Boxscore.find(playerId);
 
         player["boxscores"] = boxscores;
@@ -197,14 +186,14 @@ router.get("/:id", ensureLoggedIn, async function (req, res, next) {
  * Authentication required: logged in user
  */
 
-router.post("/gamelog", ensureLoggedIn, async function (req, res, next) {
-    try {
-        const newBoxScore = await updateDailyBoxscores();
+// router.post("/gamelog", ensureLoggedIn, async function (req, res, next) {
+//     try {
+//         const newBoxScore = await updateDailyBoxscores();
 
-        return res.json({ newBoxScore });
-    } catch (err) {
-        return next(err);
-    }
-});
+//         return res.json({ newBoxScore });
+//     } catch (err) {
+//         return next(err);
+//     }
+// });
 
 module.exports = router;

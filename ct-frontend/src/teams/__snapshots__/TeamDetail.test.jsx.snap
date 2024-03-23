@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TeamDetail component > should match the snapshot 1`] = `
+<div>
+  <div
+    class="LoadingSpinner"
+    data-testid="loading-spinner"
+  >
+    Loading ...
+  </div>
+</div>
+`;
